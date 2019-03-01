@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 import io.alpyg.rpg.Seed;
-import io.alpyg.rpg.gameplay.gathering.GatheringConfig;
+import io.alpyg.rpg.gameplay.gathering.GatherConfig;
 import io.alpyg.rpg.items.ItemConfig;
 import io.alpyg.rpg.mobs.MobConfig;
 import io.alpyg.rpg.npcs.NpcConfig;
@@ -49,7 +49,7 @@ public class ConfigLoader {
 				else if (_configFile.getParentFile().getName().equals("Quests"))
 					new Quest(configNode.getKey().toString(), configNode);
 				else if (_configFile.getParentFile().getName().equals("Gathering"))
-					new GatheringConfig(configNode.getKey().toString(), configNode);
+					new GatherConfig(configNode.getKey().toString(), configNode);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

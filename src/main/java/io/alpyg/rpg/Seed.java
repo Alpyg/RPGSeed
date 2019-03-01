@@ -33,11 +33,11 @@ import io.alpyg.rpg.events.PlayerEvents;
 import io.alpyg.rpg.gameplay.backpack.BackpackCommands;
 import io.alpyg.rpg.gameplay.fasttravel.FastTravel;
 import io.alpyg.rpg.gameplay.fasttravel.FastTravelCommands;
-import io.alpyg.rpg.gameplay.gathering.GatheringCommands;
-import io.alpyg.rpg.gameplay.gathering.data.GatheringData;
-import io.alpyg.rpg.gameplay.gathering.data.GatheringDataBuilder;
-import io.alpyg.rpg.gameplay.gathering.data.GatheringKeys;
-import io.alpyg.rpg.gameplay.gathering.data.ImmutableGatheringData;
+import io.alpyg.rpg.gameplay.gathering.GatherCommands;
+import io.alpyg.rpg.gameplay.gathering.data.GatherData;
+import io.alpyg.rpg.gameplay.gathering.data.GatherDataBuilder;
+import io.alpyg.rpg.gameplay.gathering.data.GatherKeys;
+import io.alpyg.rpg.gameplay.gathering.data.ImmutableGatherData;
 import io.alpyg.rpg.gameplay.mounts.Mount;
 import io.alpyg.rpg.gameplay.mounts.MountCommands;
 import io.alpyg.rpg.items.ItemCommands;
@@ -88,13 +88,13 @@ public class Seed {
 		Sponge.getEventManager().registerListeners(this, new Mount());
 		// Commands
 		Sponge.getCommandManager().register(Seed.plugin, AdventurerCommands.statsCommand, "status");
-		Sponge.getCommandManager().register(Seed.plugin, BackpackCommands.backpackCommand, "backpack", "bp");
-		Sponge.getCommandManager().register(Seed.plugin, MobCommands.seedMobsCommand, "seedmobs", "sm");
-		Sponge.getCommandManager().register(Seed.plugin, ItemCommands.seedItemsCommand, "seeditems", "si");
-		Sponge.getCommandManager().register(Seed.plugin, GatheringCommands.gatheringCommand, "gathering", "gather");
-		Sponge.getCommandManager().register(Seed.plugin, EffectCommands.effectCommand, "effect", "eff");
-		Sponge.getCommandManager().register(Seed.plugin, FastTravelCommands.fasttravelCommand, "fasttravel", "ft");
-		Sponge.getCommandManager().register(Seed.plugin, WhisperCommands.whisperCommand, "whisper", "w");
+		Sponge.getCommandManager().register(Seed.plugin, BackpackCommands.backpackCommand, "bp");
+		Sponge.getCommandManager().register(Seed.plugin, MobCommands.seedMobsCommand, "sm");
+		Sponge.getCommandManager().register(Seed.plugin, ItemCommands.seedItemsCommand, "si");
+		Sponge.getCommandManager().register(Seed.plugin, GatherCommands.gatheringCommand, "gather");
+		Sponge.getCommandManager().register(Seed.plugin, EffectCommands.effectCommand, "eff");
+		Sponge.getCommandManager().register(Seed.plugin, FastTravelCommands.fasttravelCommand, "ft");
+		Sponge.getCommandManager().register(Seed.plugin, WhisperCommands.whisperCommand, "w");
 		Sponge.getCommandManager().register(Seed.plugin, NpcCommands.npcCommand, "npc");
 		Sponge.getCommandManager().register(Seed.plugin, MountCommands.mountCommand, "mount");
 
@@ -116,7 +116,7 @@ public class Seed {
 		NpcKeys.registerKeys();
 		ItemKeys.registerKeys();
 		MobKeys.registerKeys();
-		GatheringKeys.registerKeys();
+		GatherKeys.registerKeys();
 		// AI Tasks
 		WanderAITask.register(this, Sponge.getGame().getRegistry());
 		WatchClosestAITask.register(this, Sponge.getGame().getRegistry());
@@ -162,9 +162,9 @@ public class Seed {
 		DataRegistration.builder()
 			.dataName("Gathering Data")
 			.manipulatorId("gathering_data")
-			.dataClass(GatheringData.class)
-			.immutableClass(ImmutableGatheringData.class)
-			.builder(new GatheringDataBuilder())
+			.dataClass(GatherData.class)
+			.immutableClass(ImmutableGatherData.class)
+			.builder(new GatherDataBuilder())
 			.buildAndRegister(this.container);
 	}
 	

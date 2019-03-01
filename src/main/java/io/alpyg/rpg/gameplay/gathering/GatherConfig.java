@@ -13,9 +13,9 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 
 import ninja.leaping.configurate.ConfigurationNode;
 
-public class GatheringConfig {
+public class GatherConfig {
 	
-	public static Map<String, GatheringConfig> nodes = new HashMap<String, GatheringConfig>();
+	public static Map<String, GatherConfig> nodes = new HashMap<String, GatherConfig>();
 	
 	public String internalName;
 	public ItemType type;
@@ -24,7 +24,7 @@ public class GatheringConfig {
 	public String tool;
 	public int uses;
 	
-	public GatheringConfig(String internalName, ConfigurationNode config) {
+	public GatherConfig(String internalName, ConfigurationNode config) {
 		this.internalName = internalName;
 		this.type = setType(config.getNode("Type").getString());
 		this.displayName = TextSerializers.FORMATTING_CODE.deserialize(config.getNode("Display").getString());
@@ -53,11 +53,11 @@ public class GatheringConfig {
 		};
 	}
 	
-	public static Function<String, GatheringConfig> getNode() {
-		return new Function<String, GatheringConfig>() {
+	public static Function<String, GatherConfig> getNode() {
+		return new Function<String, GatherConfig>() {
 
 			@Override
-			public GatheringConfig apply(String t) {
+			public GatherConfig apply(String t) {
 				return nodes.get(t);
 			}
 			

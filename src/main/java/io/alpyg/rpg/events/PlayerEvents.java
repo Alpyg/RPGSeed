@@ -7,8 +7,8 @@ import org.spongepowered.api.event.entity.living.humanoid.player.RespawnPlayerEv
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 
-import io.alpyg.rpg.adventurer.AdventurerUI;
 import io.alpyg.rpg.adventurer.AdventurerStats;
+import io.alpyg.rpg.adventurer.AdventurerUI;
 import io.alpyg.rpg.adventurer.data.AdventurerData;
 import io.alpyg.rpg.gameplay.backpack.Backpacks;
 
@@ -23,7 +23,7 @@ public class PlayerEvents {
 			player.getInventory().offer(Backpacks.itemBackpack(player));
 		
 		AdventurerStats.updatePlayerStats(player);
-//		player.getInventory().offer(GatheringTools.getMiningTool().copy());
+//		player.getInventory().offer(GatherTools.getMiningTool().copy());
 	}
 	
 	@Listener

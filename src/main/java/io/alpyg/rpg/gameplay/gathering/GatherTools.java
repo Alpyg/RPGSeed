@@ -6,7 +6,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-public class GatheringTools {
+public class GatherTools {
 
 	private static ItemStack miningTool;
 	private static ItemStack loggingTool;

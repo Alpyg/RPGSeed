@@ -25,7 +25,6 @@ public class Mob {
 		// Setting Custom Data
 		entity.offer(entity.getOrCreate(MobData.class).get());
 		entity.offer(MobKeys.ID, smd.internalName);
-		entity.offer(MobKeys.DISPLAY_NAME, smd.displayName);
 		
 		// Setting Data
 		entity.offer(Keys.DISPLAY_NAME, Text.of(smd.displayName, TextColors.GOLD, " Lvl.", (int) smd.level));
