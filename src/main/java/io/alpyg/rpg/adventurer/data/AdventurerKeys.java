@@ -13,9 +13,10 @@ import io.alpyg.rpg.adventurer.AdventurerStats;
 public class AdventurerKeys {
 
 	public static Key<Value<AdventurerStats>> STATS;
-
 	public static Key<Value<Double>> MAX_MANA;
 	public static Key<Value<Double>> MANA;
+	
+	public static Key<Value<Integer>> BALANCE;
 	
 	public static Key<Value<String>> BACKPACK_DATA;
 	public static Key<Value<Integer>> BACKPACK_SIZE;
@@ -30,7 +31,6 @@ public class AdventurerKeys {
 				.name("Adventurer Stats")
 				.query(DataQuery.of('.', "adventurer.stats"))
 				.build();
-
 		MAX_MANA = Key.builder()
 				.type(TypeTokens.DOUBLE_VALUE_TOKEN)
 				.id("adventurer_max_mana")
@@ -42,6 +42,13 @@ public class AdventurerKeys {
 				.id("adventurer_mana")
 				.name("Mana")
 				.query(DataQuery.of('.', "adventurer.mana"))
+				.build();
+		
+		BALANCE = Key.builder()
+				.type(TypeTokens.INTEGER_VALUE_TOKEN)
+				.id("adventurer_balance")
+				.name("Balance")
+				.query(DataQuery.of('.', "adventurer.balance"))
 				.build();
 		
 		BACKPACK_DATA = Key.builder()

@@ -3,7 +3,6 @@ package io.alpyg.rpg.utils;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.nio.file.Paths;
 
 import io.alpyg.rpg.Seed;
 import io.alpyg.rpg.gameplay.gathering.GatherConfig;
@@ -36,7 +35,7 @@ public class ConfigLoader {
 	}
 	
 	private static void readConfig(File _configFile) {
-		configLoader = HoconConfigurationLoader.builder().setPath(Paths.get(_configFile.getAbsolutePath())).build();
+		configLoader = HoconConfigurationLoader.builder().setFile(_configFile).build();
 		try {
 			ConfigurationNode configFile = configLoader.load();
 			for(ConfigurationNode configNode : configFile.getChildrenMap().values()) {

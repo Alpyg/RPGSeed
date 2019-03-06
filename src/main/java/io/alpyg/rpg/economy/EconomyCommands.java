@@ -1,14 +1,15 @@
 package io.alpyg.rpg.economy;
 
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.service.economy.EconomyService;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
+
+import io.alpyg.rpg.adventurer.data.AdventurerKeys;
 
 public class EconomyCommands {
 
@@ -31,9 +32,8 @@ public class EconomyCommands {
 			.description(Text.of("Check your balance."))
 	        .executor((CommandSource src, CommandContext args) -> {
 
-	        	// TODO bal
-	        	EconomyService economy = Sponge.getServiceManager().provide(EconomyService.class).get();
-	        	Economy.withdraw(economy, (Player) src);
+	        	Player player = (Player) src;
+	        	player.sendMessage(Text.of(TextColors.GREEN, "Balance: ", SeedEconomy.calculateCurrency(player.get(AdventurerKeys.BALANCE).get())));
 	        	
 	        	return CommandResult.success();
 	        })

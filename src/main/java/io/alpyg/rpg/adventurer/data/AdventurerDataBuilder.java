@@ -18,7 +18,7 @@ public class AdventurerDataBuilder extends AbstractDataBuilder<AdventurerData> i
 	
 	@Override
 	public AdventurerData create() {
-		return new AdventurerData(new AdventurerStats(), "", 3, 0);
+		return new AdventurerData(new AdventurerStats(), "", 0, 3, 0);
 	}
 	
 	@Override

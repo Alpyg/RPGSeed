@@ -1,15 +1,22 @@
 package io.alpyg.rpg.events;
 
+import java.math.BigDecimal;
+
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.event.entity.DestructEntityEvent.Death;
 import org.spongepowered.api.event.entity.living.humanoid.player.RespawnPlayerEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 
+import io.alpyg.rpg.Seed;
 import io.alpyg.rpg.adventurer.AdventurerStats;
 import io.alpyg.rpg.adventurer.AdventurerUI;
 import io.alpyg.rpg.adventurer.data.AdventurerData;
+import io.alpyg.rpg.economy.PlayerAccount;
+import io.alpyg.rpg.economy.SeedCurrency;
 import io.alpyg.rpg.gameplay.backpack.Backpacks;
 
 public class PlayerEvents {
@@ -19,11 +26,20 @@ public class PlayerEvents {
 		if (!player.get(AdventurerData.class).isPresent())
 			player.offer(player.getOrCreate(AdventurerData.class).get());
 		
-		if (!player.getInventory().contains(Backpacks.itemBackpack(player)))
-			player.getInventory().offer(Backpacks.itemBackpack(player));
+		if (!player.getInventory().contains(Backpacks.itemBackpack()))
+			player.getInventory().offer(Backpacks.itemBackpack());
 		
 		AdventurerStats.updatePlayerStats(player);
 //		player.getInventory().offer(GatherTools.getMiningTool().copy());
+		
+		Cause cause = Cause.builder()
+                .append(Seed.getContainer())
+                .build(EventContext.empty());
+		
+		PlayerAccount account = (PlayerAccount) Seed.getEconomy().getOrCreateAccount(player.getUniqueId()).get();
+		System.out.println(account.getBalance(new SeedCurrency()).toString());
+		account.setBalance(new SeedCurrency(), BigDecimal.valueOf(77777777), cause);
+		System.out.println(account.getBalance(new SeedCurrency()).toString());
 	}
 	
 	@Listener

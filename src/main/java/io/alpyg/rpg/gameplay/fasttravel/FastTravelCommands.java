@@ -31,6 +31,16 @@ public class FastTravelCommands {
 	        })
 	        .build();
 
+	public static CommandSpec fasttravelListCommand = CommandSpec.builder()
+			.description(Text.of("Fast Travel List Command"))
+	        .executor((CommandSource src, CommandContext args) -> {
+	        	
+	        	src.sendMessage(Text.of(TextColors.GREEN, "Waypoints: ", TextColors.WHITE, FastTravel.getLocations().get()));
+	        	
+	        	return CommandResult.success();	
+	        })
+	        .build();
+
 	public static CommandSpec fasttravelCreateCommand = CommandSpec.builder()
 			.description(Text.of("Fast Travel Create Command"))
 		    .arguments(GenericArguments.optional(GenericArguments.string(Text.of("Location"))))
@@ -78,6 +88,7 @@ public class FastTravelCommands {
 	public static CommandSpec fasttravelCommand = CommandSpec.builder()
 			.description(Text.of("Fast Travel Command"))
 		    .child(fasttravelTeleportCommand, "tp")
+		    .child(fasttravelListCommand, "list")
 		    .child(fasttravelCreateCommand, "create")
 		    .child(fasttravelDeleteCommand, "remove")
 		    

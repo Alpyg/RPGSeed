@@ -4,9 +4,11 @@ import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.effect.particle.ParticleTypes;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
-import io.alpyg.rpg.quests.QuestManager;
+import io.alpyg.rpg.effect.effects.SphereEffect;
 
 public class EffectCommands {
 
@@ -14,12 +16,8 @@ public class EffectCommands {
 			.description(Text.of("Effect Commands"))
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
-//	        	Player player = (Player) src;
-//	        	new SphereEffect(ParticleTypes.CRITICAL_HIT, player);
-	        	
-//	        	Mount.summonMount(player);
-	        	
-	        	QuestManager.reload();
+	        	Player player = (Player) src;
+	        	new SphereEffect(ParticleTypes.CRITICAL_HIT, player);
 	        	
 	        	return CommandResult.success();	
 	        })

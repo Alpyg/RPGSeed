@@ -19,7 +19,7 @@ public abstract class Effect {
 	public Vector3d position = new Vector3d();
 	public int iterations = 100;
 	public int duration = 1;
-	public int particleCount = 10;
+	public int particleCount = 50;
 	
 	public Entity targetEntity;
 	

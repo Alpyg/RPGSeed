@@ -65,7 +65,7 @@ public class AdventurerUI {
 		}
 		
 		player.sendMessage(ChatTypes.ACTION_BAR, Text.of(TextColors.WHITE, player.getLocation().getBlockX(),
-				"   ", VectorUtils.getDirection(VectorUtils.roundYaw(player.getRotation().getY())),
+				"   ", VectorUtils.getDirection(VectorUtils.roundYaw(Math.abs(player.getRotation().getY()))),
 				"   ", player.getLocation().getBlockZ()));
 		
 		player.offer(Keys.FOOD_LEVEL, 20);

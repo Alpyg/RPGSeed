@@ -15,18 +15,20 @@ import io.alpyg.rpg.adventurer.AdventurerStats;
 public class AdventurerData extends AbstractData<AdventurerData, ImmutableAdventurerData> {
 
 	private AdventurerStats stats;
-	
 	private double max_mana;
 	private double mana;
+	
+	private int balance;
 	
 	private String backpackData;
 	private int backpackSize;
 	
-	public AdventurerData(AdventurerStats stats, String backpackData, int backpackSize, double mana) {
+	public AdventurerData(AdventurerStats stats, String backpackData, int balance, int backpackSize, double mana) {
 		this.stats = stats;
-		
 		this.max_mana = AdventurerStats.getMaxMana(stats.magic);
 		this.mana = mana;
+		
+		this.balance = balance;
 		
 		this.backpackData = backpackData;
 		this.backpackSize = backpackSize;
@@ -36,31 +38,30 @@ public class AdventurerData extends AbstractData<AdventurerData, ImmutableAdvent
 	
 	@Override
 	protected void registerGettersAndSetters() {
-		registerFieldGetter(AdventurerKeys.BACKPACK_DATA, () -> this.backpackData);
-		registerFieldGetter(AdventurerKeys.BACKPACK_SIZE, () -> this.backpackSize);
+		registerFieldGetter(AdventurerKeys.STATS, () -> this.stats);
 		registerFieldGetter(AdventurerKeys.MAX_MANA, () -> this.max_mana);
 		registerFieldGetter(AdventurerKeys.MANA, () -> this.mana);
-		registerFieldGetter(AdventurerKeys.STATS, () -> this.stats);
+		registerFieldGetter(AdventurerKeys.BALANCE, () -> this.balance);
+		registerFieldGetter(AdventurerKeys.BACKPACK_DATA, () -> this.backpackData);
+		registerFieldGetter(AdventurerKeys.BACKPACK_SIZE, () -> this.backpackSize);
 
-		registerFieldSetter(AdventurerKeys.BACKPACK_DATA, x -> this.backpackData = x);
-		registerFieldSetter(AdventurerKeys.BACKPACK_SIZE, x -> this.backpackSize = x);
+		registerFieldSetter(AdventurerKeys.STATS, x -> this.stats = x);
 		registerFieldSetter(AdventurerKeys.MAX_MANA, x -> this.max_mana = x);
 		registerFieldSetter(AdventurerKeys.MANA, x -> this.mana = x);
-		registerFieldSetter(AdventurerKeys.STATS, x -> this.stats = x);
-		
-		registerKeyValue(AdventurerKeys.BACKPACK_DATA, this::backpackData);
-		registerKeyValue(AdventurerKeys.BACKPACK_SIZE, this::backpackSize);
+		registerFieldSetter(AdventurerKeys.BALANCE, x -> this.balance = x);
+		registerFieldSetter(AdventurerKeys.BACKPACK_DATA, x -> this.backpackData = x);
+		registerFieldSetter(AdventurerKeys.BACKPACK_SIZE, x -> this.backpackSize = x);
+
+		registerKeyValue(AdventurerKeys.STATS, this::stats);
 		registerKeyValue(AdventurerKeys.MAX_MANA, this::max_mana);
 		registerKeyValue(AdventurerKeys.MANA, this::mana);
-		registerKeyValue(AdventurerKeys.STATS, this::adv);
+		registerKeyValue(AdventurerKeys.BALANCE, this::balance);
+		registerKeyValue(AdventurerKeys.BACKPACK_DATA, this::backpackData);
+		registerKeyValue(AdventurerKeys.BACKPACK_SIZE, this::backpackSize);
 	}
 
-    public Value<String> backpackData() {
-        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BACKPACK_DATA, backpackData);
-    }
-
-    public Value<Integer> backpackSize() {
-        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BACKPACK_SIZE, backpackSize);
+    public Value<AdventurerStats> stats() {
+        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.STATS, stats);
     }
 
     public Value<Double> max_mana() {
@@ -71,8 +72,16 @@ public class AdventurerData extends AbstractData<AdventurerData, ImmutableAdvent
         return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.MANA, mana);
     }
 
-    public Value<AdventurerStats> adv() {
-        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.STATS, stats);
+    public Value<Integer> balance() {
+        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BALANCE, balance);
+    }
+
+    public Value<String> backpackData() {
+        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BACKPACK_DATA, backpackData);
+    }
+
+    public Value<Integer> backpackSize() {
+        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BACKPACK_SIZE, backpackSize);
     }
 
     @Override
@@ -81,11 +90,12 @@ public class AdventurerData extends AbstractData<AdventurerData, ImmutableAdvent
         if (otherData_.isPresent()) {
         	AdventurerData otherData = otherData_.get();
         	AdventurerData finalData = overlap.merge(this, otherData);
-            this.backpackData = finalData.backpackData;
-            this.backpackSize = finalData.backpackSize;
+            this.stats = finalData.stats;
             this.max_mana = finalData.max_mana;
             this.mana = finalData.mana;
-            this.stats = finalData.stats;
+            this.balance = finalData.balance;
+            this.backpackData = finalData.backpackData;
+            this.backpackSize = finalData.backpackSize;
         }
         return Optional.of(this);
     }
@@ -96,31 +106,33 @@ public class AdventurerData extends AbstractData<AdventurerData, ImmutableAdvent
     }
 
 	public Optional<AdventurerData> from(DataView view) {
-        if (!view.contains(AdventurerKeys.BACKPACK_DATA.getQuery(),
-        		AdventurerKeys.BACKPACK_SIZE.getQuery(),
+        if (!view.contains(AdventurerKeys.STATS.getQuery(),
         		AdventurerKeys.MAX_MANA.getQuery(),
         		AdventurerKeys.MANA.getQuery(),
-        		AdventurerKeys.STATS.getQuery()))
+        		AdventurerKeys.BALANCE.getQuery(),
+        		AdventurerKeys.BACKPACK_DATA.getQuery(),
+        		AdventurerKeys.BACKPACK_SIZE.getQuery()))
         	return Optional.empty();
         
-        this.backpackData = view.getString(AdventurerKeys.BACKPACK_DATA.getQuery()).get();
-        this.backpackSize = view.getInt(AdventurerKeys.BACKPACK_SIZE.getQuery()).get();
+        this.stats = view.getSerializable(AdventurerKeys.STATS.getQuery(), AdventurerStats.class).get();
         this.max_mana = view.getDouble(AdventurerKeys.MAX_MANA.getQuery()).get();
         this.mana = view.getDouble(AdventurerKeys.MANA.getQuery()).get();
+        this.balance = view.getInt(AdventurerKeys.BALANCE.getQuery()).get();
+        this.backpackData = view.getString(AdventurerKeys.BACKPACK_DATA.getQuery()).get();
+        this.backpackSize = view.getInt(AdventurerKeys.BACKPACK_SIZE.getQuery()).get();
         
-        this.stats = view.getSerializable(AdventurerKeys.STATS.getQuery(), AdventurerStats.class).get();
         
         return Optional.of(this);
     }
     
     @Override
     public AdventurerData copy() {
-        return new AdventurerData(this.stats, this.backpackData, this.backpackSize, this.mana);
+        return new AdventurerData(this.stats, this.backpackData, this.balance, this.backpackSize, this.mana);
     }
 
     @Override
     public ImmutableAdventurerData asImmutable() {
-        return new ImmutableAdventurerData(this.stats, this.backpackData, this.backpackSize, this.mana);
+        return new ImmutableAdventurerData(this.stats, this.backpackData, this.balance, this.backpackSize, this.mana);
     }
 
     @Override
@@ -131,10 +143,11 @@ public class AdventurerData extends AbstractData<AdventurerData, ImmutableAdvent
 	@Override
 	public DataContainer toContainer() {
         return super.toContainer()
-                .set(AdventurerKeys.BACKPACK_DATA.getQuery(), this.backpackData)
-                .set(AdventurerKeys.BACKPACK_SIZE.getQuery(), this.backpackSize)
+                .set(AdventurerKeys.STATS.getQuery(), this.stats)
                 .set(AdventurerKeys.MAX_MANA.getQuery(), this.max_mana)
                 .set(AdventurerKeys.MANA.getQuery(), this.mana)
-                .set(AdventurerKeys.STATS.getQuery(), this.stats);
+                .set(AdventurerKeys.BALANCE.getQuery(), this.balance)
+                .set(AdventurerKeys.BACKPACK_DATA.getQuery(), this.backpackData)
+                .set(AdventurerKeys.BACKPACK_SIZE.getQuery(), this.backpackSize);
 	}
 }

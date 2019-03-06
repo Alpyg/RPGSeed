@@ -36,6 +36,10 @@ public class InventoryEvents {
 			}
 		}
 		
+		else if (invTitle.contains("Quests"))
+			if (slot < 54)
+				e.setCancelled(true);
+		
 		// Upgrade Menu
 		else if (invTitle.contains("Equipment Upgrade")) {
 			if (!EquipmentUpgradeMenu.equipmentSlots.contains(slot) && slot < 9)

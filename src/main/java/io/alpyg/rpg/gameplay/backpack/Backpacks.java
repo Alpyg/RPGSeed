@@ -121,8 +121,8 @@ public class Backpacks {
 		return backpack;
 	}
 	
-	public static ItemStack itemBackpack(Player player) {		// Backpack ItemStack
-		return backpack;
+	public static ItemStack itemBackpack() {		// Backpack ItemStack
+		return backpack.copy();
 	}
 	
 	static {

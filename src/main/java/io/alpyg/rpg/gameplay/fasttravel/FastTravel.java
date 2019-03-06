@@ -2,7 +2,6 @@ package io.alpyg.rpg.gameplay.fasttravel;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +34,7 @@ public abstract class FastTravel {
 			File fastTravelFile = new File(Seed.configDir + File.separator + "FastTravel.conf");	// Load file
 			if (fastTravelFile.createNewFile()) return;		// Create file if not exist and return
 			
-			configLoader = HoconConfigurationLoader.builder().setPath(Paths.get(fastTravelFile.getAbsolutePath())).build();
+			configLoader = HoconConfigurationLoader.builder().setFile(fastTravelFile).build();
 			fastTravelConfig = configLoader.load();
 			
 			for (ConfigurationNode fastTravelLocation : fastTravelConfig.getChildrenMap().values()) {

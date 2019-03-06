@@ -9,8 +9,6 @@ import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.text.Text;
 
-import io.alpyg.rpg.gameplay.gathering.data.GatherKeys;
-import io.alpyg.rpg.mobs.data.MobKeys;
 import io.alpyg.rpg.npcs.data.NpcKeys;
 import io.alpyg.rpg.quests.QuestManager;
 
@@ -36,13 +34,11 @@ public class EntityInteractionEvents {
 //			}
 		}
 		
-		System.out.println(e.getTargetEntity().get(GatherKeys.ID).orElse("NONE"));
-		
 		if (e.getTargetEntity() instanceof Human) {
 			if (e.getTargetEntity().get(NpcKeys.QUEST).isPresent())
-				player.sendMessage(Text.of(QuestManager.getQuest(e.getTargetEntity().get(NpcKeys.QUEST).get()).get().getStage(1).get().objective.toPlainSingle()));
-			System.out.println(e.getTargetEntity().get(MobKeys.ID).get());
+				QuestManager.getQuest(e.getTargetEntity().get(NpcKeys.QUEST).get()).get().openQuestView(player);
 			return;
 		}
 	}
+	
 }

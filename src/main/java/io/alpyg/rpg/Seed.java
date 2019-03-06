@@ -11,6 +11,7 @@ import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.service.user.UserStorageService;
 
 import com.google.inject.Inject;
 
@@ -24,6 +25,7 @@ import io.alpyg.rpg.adventurer.data.AdventurerKeys;
 import io.alpyg.rpg.adventurer.data.ImmutableAdventurerData;
 import io.alpyg.rpg.chat.WhisperCommands;
 import io.alpyg.rpg.damage.DamageHandler;
+import io.alpyg.rpg.economy.SeedEconomy;
 import io.alpyg.rpg.economy.EconomyCommands;
 import io.alpyg.rpg.effect.EffectCommands;
 import io.alpyg.rpg.events.EntityInteractionEvents;
@@ -46,9 +48,6 @@ import io.alpyg.rpg.items.data.ItemData;
 import io.alpyg.rpg.items.data.ItemDataBuilder;
 import io.alpyg.rpg.items.data.ItemKeys;
 import io.alpyg.rpg.mobs.MobCommands;
-import io.alpyg.rpg.mobs.ai.MeleeAttackAITask;
-import io.alpyg.rpg.mobs.ai.WanderAITask;
-import io.alpyg.rpg.mobs.ai.WatchClosestAITask;
 import io.alpyg.rpg.mobs.data.ImmutableMobData;
 import io.alpyg.rpg.mobs.data.MobData;
 import io.alpyg.rpg.mobs.data.MobDataBuilder;
@@ -58,6 +57,8 @@ import io.alpyg.rpg.npcs.data.ImmutableNpcData;
 import io.alpyg.rpg.npcs.data.NpcData;
 import io.alpyg.rpg.npcs.data.NpcDataBuilder;
 import io.alpyg.rpg.npcs.data.NpcKeys;
+import io.alpyg.rpg.quests.QuestCommands;
+import io.alpyg.rpg.quests.QuestManager;
 import io.alpyg.rpg.utils.ConfigLoader;
 import io.alpyg.rpg.utils.Reference;
 
@@ -73,40 +74,21 @@ public class Seed {
 	@ConfigDir(sharedRoot = false)
     public static Path configDir;
 	
+	private SeedEconomy economy;
+	private UserStorageService userStorageService;
 	public static MineskinService mineSkin;
     
 	@Listener
 	public void onServerStart(GameStartedServerEvent e) {
 		plugin = this;
 		configDir = Sponge.getConfigManager().getPluginConfig(this).getDirectory();
-		// Events
-		Sponge.getEventManager().registerListeners(this, new PlayerEvents());
-		Sponge.getEventManager().registerListeners(this, new EntityInteractionEvents());
-		Sponge.getEventManager().registerListeners(this, new InventoryEvents());
-		Sponge.getEventManager().registerListeners(this, new InteractionEvents());
-		Sponge.getEventManager().registerListeners(this, new DamageHandler());
-		Sponge.getEventManager().registerListeners(this, new Mount());
-		// Commands
-		Sponge.getCommandManager().register(Seed.plugin, AdventurerCommands.statsCommand, "status");
-		Sponge.getCommandManager().register(Seed.plugin, BackpackCommands.backpackCommand, "bp");
-		Sponge.getCommandManager().register(Seed.plugin, MobCommands.seedMobsCommand, "sm");
-		Sponge.getCommandManager().register(Seed.plugin, ItemCommands.seedItemsCommand, "si");
-		Sponge.getCommandManager().register(Seed.plugin, GatherCommands.gatheringCommand, "gather");
-		Sponge.getCommandManager().register(Seed.plugin, EffectCommands.effectCommand, "eff");
-		Sponge.getCommandManager().register(Seed.plugin, FastTravelCommands.fasttravelCommand, "ft");
-		Sponge.getCommandManager().register(Seed.plugin, WhisperCommands.whisperCommand, "w");
-		Sponge.getCommandManager().register(Seed.plugin, NpcCommands.npcCommand, "npc");
-		Sponge.getCommandManager().register(Seed.plugin, MountCommands.mountCommand, "mount");
-
-		Sponge.getCommandManager().register(Seed.plugin, EconomyCommands.payCommand, "pay");
-		Sponge.getCommandManager().register(Seed.plugin, EconomyCommands.balCommand, "bal");
-
-		ConfigLoader.loadConfig("Npcs");
-		ConfigLoader.loadConfig("Mobs");
-		ConfigLoader.loadConfig("Items");
-		ConfigLoader.loadConfig("Quests");
-		ConfigLoader.loadConfig("Gathering");
-		FastTravel.loadFastTravelLocations();
+		
+		economy = new SeedEconomy();
+		userStorageService = Sponge.getServiceManager().provideUnchecked(UserStorageService.class);
+		
+		registerEvents();
+		registerCommands();
+		loadConfig();
 	}
 
 	@Listener
@@ -117,10 +99,6 @@ public class Seed {
 		ItemKeys.registerKeys();
 		MobKeys.registerKeys();
 		GatherKeys.registerKeys();
-		// AI Tasks
-		WanderAITask.register(this, Sponge.getGame().getRegistry());
-		WatchClosestAITask.register(this, Sponge.getGame().getRegistry());
-		MeleeAttackAITask.register(this, Sponge.getGame().getRegistry());
 		
 		Sponge.getDataManager().registerBuilder(AdventurerStats.class, new AdventurerBuilder());
 		
@@ -168,6 +146,50 @@ public class Seed {
 			.buildAndRegister(this.container);
 	}
 	
+	private static void registerEvents() {
+		Sponge.getEventManager().registerListeners(Seed.plugin, new PlayerEvents());
+		Sponge.getEventManager().registerListeners(Seed.plugin, new EntityInteractionEvents());
+		Sponge.getEventManager().registerListeners(Seed.plugin, new InventoryEvents());
+		Sponge.getEventManager().registerListeners(Seed.plugin, new InteractionEvents());
+		Sponge.getEventManager().registerListeners(Seed.plugin, new DamageHandler());
+		Sponge.getEventManager().registerListeners(Seed.plugin, new Mount());
+	}
+	
+	private static void registerCommands() {
+		Sponge.getCommandManager().register(Seed.plugin, AdventurerCommands.statsCommand, "status");
+		Sponge.getCommandManager().register(Seed.plugin, QuestCommands.questCommand, "quest");
+		Sponge.getCommandManager().register(Seed.plugin, BackpackCommands.backpackCommand, "bp");
+		Sponge.getCommandManager().register(Seed.plugin, MobCommands.seedMobsCommand, "sm");
+		Sponge.getCommandManager().register(Seed.plugin, ItemCommands.seedItemsCommand, "si");
+		Sponge.getCommandManager().register(Seed.plugin, GatherCommands.gatheringCommand, "gather");
+		Sponge.getCommandManager().register(Seed.plugin, EffectCommands.effectCommand, "eff");
+		Sponge.getCommandManager().register(Seed.plugin, FastTravelCommands.fasttravelCommand, "ft");
+		Sponge.getCommandManager().register(Seed.plugin, WhisperCommands.whisperCommand, "w");
+		Sponge.getCommandManager().register(Seed.plugin, NpcCommands.npcCommand, "npc");
+		Sponge.getCommandManager().register(Seed.plugin, MountCommands.mountCommand, "mount");
+
+		Sponge.getCommandManager().register(Seed.plugin, EconomyCommands.payCommand, "pay");
+		Sponge.getCommandManager().register(Seed.plugin, EconomyCommands.balCommand, "bal");
+	}
+	
+	private static void loadConfig() {
+		ConfigLoader.loadConfig("Npcs");
+		ConfigLoader.loadConfig("Mobs");
+		ConfigLoader.loadConfig("Items");
+		ConfigLoader.loadConfig("Gathering");
+		
+		QuestManager.loadQuests();
+		FastTravel.loadFastTravelLocations();
+	}
+	
+	public static SeedEconomy getEconomy() {
+		return plugin.economy;
+	}
+	
+	public static UserStorageService getUserStorageService() {
+		return plugin.userStorageService;
+	}
+	
 	public static Logger getLogger() {
 		return plugin.logger;
 	}
@@ -175,5 +197,6 @@ public class Seed {
 	public static PluginContainer getContainer() {
 		return plugin.container;
 	}
+	
 }
 

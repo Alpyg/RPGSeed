@@ -5,6 +5,8 @@ import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.effect.sound.SoundCategories;
+import org.spongepowered.api.effect.sound.SoundTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
@@ -19,10 +21,11 @@ public class WhisperCommands {
 		    		GenericArguments.string(Text.of("Message")))
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
-	        	Player sender = (Player) src;
+//	        	Player sender = (Player) src;
 	        	Player player = (Player) args.getOne("Player").get();
-	        	Text text = Text.of(TextColors.DARK_PURPLE, " ", sender.getName(), ChatIcons.WHISPER, TextColors.LIGHT_PURPLE, (String) args.getOne("Message").get());
-	        	
+	        	Text text = Text.of(TextColors.DARK_PURPLE, " ", src.getName(), ChatIcons.WHISPER, TextColors.LIGHT_PURPLE, (String) args.getOne("Message").get());
+
+                player.playSound(SoundTypes.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategories.PLAYER, player.getPosition(), 1, 2);
 	        	player.sendMessage(text);
 	        	
 	        	return CommandResult.success();	
