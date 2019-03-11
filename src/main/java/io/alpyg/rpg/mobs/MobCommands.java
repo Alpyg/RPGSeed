@@ -14,7 +14,8 @@ import io.alpyg.rpg.utils.ConfigLoader;
 public class MobCommands {
 	
 	public static CommandSpec seedMobsReload = CommandSpec.builder()
-		    .description(Text.of("SeedMobs reloaded"))
+		    .description(Text.of("Reload Mobs"))
+		    .permission("rpgs.mobs.reload")
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
 	        	src.sendMessage(Text.of(TextColors.GREEN, Text.of("Seed Mobs Reloaded")));
@@ -27,7 +28,8 @@ public class MobCommands {
 	        .build();
 	
 	public static CommandSpec seedMobsSpawn = CommandSpec.builder()
-		    .description(Text.of("SeedMob Spawned"))
+		    .description(Text.of("Spawn Mob"))
+		    .permission("rpgs.mobs.spawn")
 		    .arguments(GenericArguments.onlyOne(GenericArguments.choices(Text.of("Mob"), MobConfig.getMobsConfig(), MobConfig.getMobConfig(), true)))
 	        .executor((CommandSource src, CommandContext args) -> {
 
@@ -44,7 +46,8 @@ public class MobCommands {
 	        .build();
 	
 	public static CommandSpec seedMobsList = CommandSpec.builder()
-		    .description(Text.of("SeedMob List"))
+		    .description(Text.of("List Mobs"))
+		    .permission("rpgs.mobs.list")
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
 	        	String list = MobConfig.mobs.keySet().toString();
@@ -56,7 +59,8 @@ public class MobCommands {
 	        .build();
 
 	public static CommandSpec seedMobsCommand = CommandSpec.builder()
-		    .description(Text.of("SeedMobs Commands"))
+		    .description(Text.of("Mobs Commands"))
+		    .permission("rpgs.mobs")
 		    .child(seedMobsReload, "Reload")
 		    .child(seedMobsSpawn, "Spawn")
 		    .child(seedMobsList, "List")

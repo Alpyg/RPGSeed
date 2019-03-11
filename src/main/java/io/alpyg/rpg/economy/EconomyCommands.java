@@ -15,13 +15,12 @@ public class EconomyCommands {
 
 	public static CommandSpec payCommand = CommandSpec.builder()
 			.description(Text.of("Pay Command"))
+		    .permission("rpgs.economy.pay")
 		    .arguments(
 		    		GenericArguments.onlyOne(GenericArguments.player(Text.of("Player"))),
 		    		GenericArguments.integer(Text.of("Amount")))
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
-	        	// TODO pay
-//	        	if (!(src instanceof Player)) return CommandResult.empty();
 	        	
 	        	
 	        	return CommandResult.success();
@@ -30,6 +29,7 @@ public class EconomyCommands {
 
 	public static CommandSpec balCommand = CommandSpec.builder()
 			.description(Text.of("Check your balance."))
+		    .permission("rpgs.economy.balance")
 	        .executor((CommandSource src, CommandContext args) -> {
 
 	        	Player player = (Player) src;

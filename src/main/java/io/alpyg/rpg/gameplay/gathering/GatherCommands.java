@@ -14,6 +14,7 @@ public class GatherCommands {
 
 	public static CommandSpec set = CommandSpec.builder()
 			.description(Text.of("Set Gathering Node"))
+		    .permission("rpgs.gathering.set")
 			.arguments(GenericArguments.onlyOne(GenericArguments.choices(Text.of("Node"), GatherConfig.getNodes(), GatherConfig.getNode(), true)))
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
@@ -26,7 +27,8 @@ public class GatherCommands {
 	        .build();
 
 	public static CommandSpec reload = CommandSpec.builder()
-			.description(Text.of("Set Gathering Node"))
+			.description(Text.of("Reload Gathering Nodes"))
+		    .permission("rpgs.gathering.reload")
 	        .executor((CommandSource src, CommandContext args) -> { 
 
 	        	GatherConfig.nodes.clear();
@@ -38,6 +40,7 @@ public class GatherCommands {
 	
 	public static CommandSpec gatheringCommand = CommandSpec.builder()
 			.description(Text.of("Gathering Commands"))
+		    .permission("rpgs.gathering")
 		    .child(reload, "reload")
 		    .child(set, "set")
 		    

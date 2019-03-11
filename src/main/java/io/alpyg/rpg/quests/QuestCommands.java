@@ -26,6 +26,7 @@ public class QuestCommands {
 
 	public static CommandSpec questReload = CommandSpec.builder()
 			.description(Text.of("Reload Quests"))
+		    .permission("rpgs.quests.reload")
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
 	        	QuestManager.loadQuests();
@@ -38,6 +39,7 @@ public class QuestCommands {
 	
 	public static CommandSpec questCommand = CommandSpec.builder()
 			.description(Text.of("Quest Commands"))
+		    .permission("rpgs.quests")
 			.child(questReload, "reload")
 			.child(questJournal, "journal")
 			

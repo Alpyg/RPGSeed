@@ -14,6 +14,7 @@ public class EffectCommands {
 
 	public static CommandSpec effectCommand = CommandSpec.builder()
 			.description(Text.of("Effect Commands"))
+		    .permission("rpgs.effect")
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
 	        	Player player = (Player) src;

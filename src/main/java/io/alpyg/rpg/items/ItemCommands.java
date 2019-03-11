@@ -14,7 +14,8 @@ import io.alpyg.rpg.utils.ConfigLoader;
 public class ItemCommands {
 	
 	public static CommandSpec seedItemsReload = CommandSpec.builder()
-		    .description(Text.of("SeedItems Reload"))
+		    .description(Text.of("Reload Items"))
+		    .permission("rpgs.items.reload")
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	src.sendMessage(Text.of(TextColors.GREEN, Text.of("Seed Items Reloaded")));
 
@@ -26,7 +27,8 @@ public class ItemCommands {
 	        .build();
 	
 	public static CommandSpec seedItemsGive = CommandSpec.builder()
-		    .description(Text.of("SeedItem Give"))
+		    .description(Text.of("Give Item"))
+		    .permission("rpgs.items.give")
 		    .arguments(
 		    		GenericArguments.onlyOne(GenericArguments.player(Text.of("Player"))),
 		    		GenericArguments.onlyOne(GenericArguments.choices(Text.of("Item"), ItemConfig.getItems(), ItemConfig.getItem(), true)),
@@ -44,7 +46,8 @@ public class ItemCommands {
 	        .build();
 	
 	public static CommandSpec seedItemsList = CommandSpec.builder()
-		    .description(Text.of("SeedItem List"))
+		    .description(Text.of("List Items"))
+		    .permission("rpgs.items.list")
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
 	        	String list = ItemConfig.getItems().get().toString();
@@ -57,7 +60,8 @@ public class ItemCommands {
 	        .build();
 
 	public static CommandSpec seedItemsCommand = CommandSpec.builder()
-		    .description(Text.of("Seed Mobs Commands"))
+		    .description(Text.of("Items Commands"))
+		    .permission("rpgs.items")
 		    .child(seedItemsReload, "Reload")
 		    .child(seedItemsGive, "Give")
 		    .child(seedItemsList, "List")

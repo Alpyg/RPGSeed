@@ -15,6 +15,7 @@ public class NpcCommands {
 
 	public static CommandSpec spawn = CommandSpec.builder()
 			.description(Text.of("Spawn Npc"))
+		    .permission("rpgs.npcs.spawn")
 			.arguments(GenericArguments.onlyOne(GenericArguments.choices(Text.of("Npc"), NpcConfig.getNpcs(), NpcConfig.getNpc(), true)))
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
@@ -31,6 +32,7 @@ public class NpcCommands {
 
 	public static CommandSpec reload = CommandSpec.builder()
 			.description(Text.of("Reload Npcs"))
+		    .permission("rpgs.npcs.reload")
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
 	        	NpcConfig.npcs.clear();
@@ -44,6 +46,7 @@ public class NpcCommands {
 	
 	public static CommandSpec npcCommand = CommandSpec.builder()
 			.description(Text.of("NPC Commands"))
+		    .permission("rpgs.npcs")
 		    .child(reload, "reload")
 		    .child(spawn, "spawn")
 		    

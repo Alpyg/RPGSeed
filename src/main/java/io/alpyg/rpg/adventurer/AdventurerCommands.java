@@ -15,6 +15,7 @@ public class AdventurerCommands {
 	
 	public static CommandSpec getStats = CommandSpec.builder()
 		    .description(Text.of("Get Stats"))
+		    .permission("rpgs.stats.get")
 		    .arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("Player"))))
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
@@ -38,6 +39,7 @@ public class AdventurerCommands {
 	
 	public static CommandSpec setStats = CommandSpec.builder()
 		    .description(Text.of("Set Stats"))
+		    .permission("rpgs.stats.set")
 		    .arguments(GenericArguments.player(Text.of("Player")),
 		    		GenericArguments.choices(Text.of("Stat"), AdventurerStatsMenu.getStats(), AdventurerStatsMenu.getStat(), false),
 		    		GenericArguments.integer(Text.of("Amount")))
@@ -59,6 +61,7 @@ public class AdventurerCommands {
 	
 	public static CommandSpec resetStats = CommandSpec.builder()
 		    .description(Text.of("Reset Stats"))
+		    .permission("rpgs.stats.reset")
 		    .arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("Player"))))
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
@@ -81,6 +84,7 @@ public class AdventurerCommands {
 	
 	public static CommandSpec reallocateStats = CommandSpec.builder()
 		    .description(Text.of("Reallocate Stats"))
+		    .permission("rpgs.stats.reallocate")
 		    .arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("Player"))))
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
@@ -102,6 +106,7 @@ public class AdventurerCommands {
 	
 	public static CommandSpec statsCommand = CommandSpec.builder()
 		    .description(Text.of("Status Commands"))
+		    .permission("rpgs.stats")
 		    .child(setStats, "set")
 		    .child(getStats, "get")
 		    .child(resetStats, "reset")

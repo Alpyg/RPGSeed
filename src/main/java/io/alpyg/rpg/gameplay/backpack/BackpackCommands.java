@@ -14,6 +14,7 @@ public class BackpackCommands {
 
 	public static CommandSpec backpackCommand = CommandSpec.builder()
 			.description(Text.of("Backpack Commands"))
+		    .permission("rpgs.backpacks")
 		    .arguments(GenericArguments.optional(GenericArguments.player(Text.of("Player"))))
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
