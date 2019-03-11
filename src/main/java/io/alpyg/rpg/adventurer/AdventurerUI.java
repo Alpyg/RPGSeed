@@ -16,7 +16,7 @@ import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
 
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 import io.alpyg.rpg.adventurer.data.AdventurerKeys;
 import io.alpyg.rpg.utils.VectorUtils;
 
@@ -48,9 +48,9 @@ public class AdventurerUI {
 					t.cancel();
 			}
 			
-		}).interval(200, TimeUnit.MILLISECONDS).submit(Seed.plugin);
+		}).interval(200, TimeUnit.MILLISECONDS).submit(Rpgs.plugin);
 		
-		this.titleTask = Task.builder().execute(new Runnable() { @Override public void run() {  }}).submit(Seed.plugin);
+		this.titleTask = Task.builder().execute(new Runnable() { @Override public void run() {  }}).submit(Rpgs.plugin);
 	}
 	
 	private void updateUI(Player player) {
@@ -90,7 +90,7 @@ public class AdventurerUI {
 				player.sendTitle(Title.of(Text.of(), Text.of()));
 			}
 			
-		}).submit(Seed.plugin);
+		}).submit(Rpgs.plugin);
 	}
 	
 	public void stop() {

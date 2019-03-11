@@ -20,7 +20,7 @@ import io.alpyg.rpg.quests.QuestManager;
 public class InteractionEvents {
 	
 	@Listener
-	public void onItemRightClick(InteractItemEvent e, @First Player player) {
+	public void onItemRightClick(InteractItemEvent.Secondary e, @First Player player) {
 		Text item = e.getItemStack().get(Keys.DISPLAY_NAME).orElse(Text.of());
 		if (item.equals(Backpacks.backpackName)) {
 			e.setCancelled(true);

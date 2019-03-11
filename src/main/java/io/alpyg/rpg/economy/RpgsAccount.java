@@ -21,22 +21,22 @@ import org.spongepowered.api.service.economy.transaction.TransactionTypes;
 import org.spongepowered.api.service.economy.transaction.TransferResult;
 import org.spongepowered.api.text.Text;
 
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 import io.alpyg.rpg.adventurer.data.AdventurerKeys;
 
-public class PlayerAccount implements UniqueAccount {
+public class RpgsAccount implements UniqueAccount {
 	
 	private UUID uuid;
 	private Player player;
 	
-	public PlayerAccount(UUID uuid) {
+	public RpgsAccount(UUID uuid) {
 		this.uuid = uuid;
 		this.player = Sponge.getServer().getPlayer(uuid).get();
 	}
 
 	@Override
 	public Text getDisplayName() {
-		return Text.of(Seed.getUserStorageService().get(uuid).get().getName());
+		return Text.of(Rpgs.getUserStorageService().get(uuid).get().getName());
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class PlayerAccount implements UniqueAccount {
 	public Map<Currency, BigDecimal> getBalances(Set<Context> contexts) {
         Map<Currency, BigDecimal> balances = new HashMap<>();
 
-        for (Currency currency : Seed.getEconomy().getCurrencies()) {
+        for (Currency currency : Rpgs.getEconomy().getCurrencies()) {
             balances.put(currency, getBalance(currency, contexts));
         }
 
@@ -83,9 +83,9 @@ public class PlayerAccount implements UniqueAccount {
 
             player.offer(AdventurerKeys.BALANCE, amount.intValue());
 
-            transactionResult = new SeedTransactionResult(this, currency, delta.abs(), contexts, ResultType.SUCCESS, transactionType);
+            transactionResult = new RpgsTransactionResult(this, currency, delta.abs(), contexts, ResultType.SUCCESS, transactionType);
         } else {
-        	transactionResult = new SeedTransactionResult(this, currency, BigDecimal.ZERO, contexts, ResultType.FAILED, TransactionTypes.DEPOSIT);
+        	transactionResult = new RpgsTransactionResult(this, currency, BigDecimal.ZERO, contexts, ResultType.FAILED, TransactionTypes.DEPOSIT);
         }
 
         return transactionResult;
@@ -95,7 +95,7 @@ public class PlayerAccount implements UniqueAccount {
 	public Map<Currency, TransactionResult> resetBalances(Cause cause, Set<Context> contexts) {
         Map<Currency, TransactionResult> result = new HashMap<>();
 
-        for (Currency currency : Seed.getEconomy().getCurrencies()) {
+        for (Currency currency : Rpgs.getEconomy().getCurrencies()) {
             result.put(currency, resetBalance(currency, cause, contexts));
         }
 
@@ -124,7 +124,7 @@ public class PlayerAccount implements UniqueAccount {
             return setBalance(currency, newBalance, cause);
         }
 
-        return new SeedTransactionResult(this, currency, amount, contexts, ResultType.ACCOUNT_NO_FUNDS, TransactionTypes.WITHDRAW);
+        return new RpgsTransactionResult(this, currency, amount, contexts, ResultType.ACCOUNT_NO_FUNDS, TransactionTypes.WITHDRAW);
 	}
 
 	@Override
@@ -141,22 +141,22 @@ public class PlayerAccount implements UniqueAccount {
             	if (to.hasBalance(currency)) {
                 	to.deposit(currency, amount, cause, contexts);
 
-                    transferResult = new SeedTransferResult(this, to, currency, amount, contexts, ResultType.SUCCESS, TransactionTypes.TRANSFER);
+                    transferResult = new RpgsTransferResult(this, to, currency, amount, contexts, ResultType.SUCCESS, TransactionTypes.TRANSFER);
 
                     return transferResult;
             	} else {
-                	transferResult = new SeedTransferResult(this, to, currency, amount, contexts, ResultType.FAILED, TransactionTypes.TRANSFER);
+                	transferResult = new RpgsTransferResult(this, to, currency, amount, contexts, ResultType.FAILED, TransactionTypes.TRANSFER);
 
                     return transferResult;
                 }
             } else {
-            	transferResult = new SeedTransferResult(this, to, currency, amount, contexts, ResultType.ACCOUNT_NO_FUNDS, TransactionTypes.TRANSFER);
+            	transferResult = new RpgsTransferResult(this, to, currency, amount, contexts, ResultType.ACCOUNT_NO_FUNDS, TransactionTypes.TRANSFER);
 
                 return transferResult;
             }
         }
 
-        transferResult = new SeedTransferResult(this, to, currency, amount, contexts, ResultType.FAILED, TransactionTypes.TRANSFER);
+        transferResult = new RpgsTransferResult(this, to, currency, amount, contexts, ResultType.FAILED, TransactionTypes.TRANSFER);
 
         return transferResult;
 	}

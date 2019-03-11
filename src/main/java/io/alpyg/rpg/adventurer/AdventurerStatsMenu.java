@@ -35,7 +35,7 @@ import org.spongepowered.api.world.World;
 
 import com.flowpowered.math.vector.Vector3d;
 
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 import io.alpyg.rpg.adventurer.data.AdventurerKeys;
 
 public class AdventurerStatsMenu {
@@ -47,7 +47,7 @@ public class AdventurerStatsMenu {
 		Inventory inv = Inventory.builder().of(InventoryArchetypes.DOUBLE_CHEST)
 				.property(InventoryDimension.of(9, 4))
 				.property(InventoryTitle.of(Text.of("Adventurer Status - ", p.get(AdventurerKeys.STATS).get().points, " Points")))
-				.build(Seed.plugin);
+				.build(Rpgs.plugin);
 		
 		fillStatusMenu(inv, p);
 		

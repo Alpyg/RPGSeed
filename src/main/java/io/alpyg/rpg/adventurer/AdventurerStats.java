@@ -36,10 +36,7 @@ public class AdventurerStats implements DataSerializable {
     	this.defence = defence;
     	this.agility = agility;
     	this.magic = magic;
-    }
-    
-    public void totalPoints() {
-    	total_points = points + vitality + strength + defence + agility + magic;
+    	this.total_points = points + vitality + strength + defence + agility + magic;
     }
 
     @Override
@@ -86,7 +83,6 @@ public class AdventurerStats implements DataSerializable {
 	}
 
 	public static void updatePlayerStats(Player p) {
-		p.get(AdventurerKeys.STATS).get().totalPoints();
 		p.offer(Keys.MAX_HEALTH, getMaxHealth(p.get(AdventurerKeys.STATS).get().vitality));
 		p.offer(Keys.HEALTH, p.get(Keys.MAX_HEALTH).get());
 		p.offer(AdventurerKeys.MAX_MANA, getMaxMana(p.get(AdventurerKeys.STATS).get().magic));

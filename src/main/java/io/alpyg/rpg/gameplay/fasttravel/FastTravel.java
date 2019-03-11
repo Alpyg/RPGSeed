@@ -15,7 +15,7 @@ import org.spongepowered.api.world.World;
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.reflect.TypeToken;
 
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 import io.alpyg.rpg.utils.VectorUtils;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -31,7 +31,7 @@ public abstract class FastTravel {
 	
 	public static void loadFastTravelLocations() {
 		try {
-			File fastTravelFile = new File(Seed.configDir + File.separator + "FastTravel.conf");	// Load file
+			File fastTravelFile = new File(Rpgs.configDir + File.separator + "FastTravel.conf");	// Load file
 			if (fastTravelFile.createNewFile()) return;		// Create file if not exist and return
 			
 			configLoader = HoconConfigurationLoader.builder().setFile(fastTravelFile).build();

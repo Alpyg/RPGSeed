@@ -12,7 +12,7 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 import io.alpyg.rpg.items.types.Armor;
 import io.alpyg.rpg.items.types.Material;
 import io.alpyg.rpg.items.types.Misc;
@@ -61,7 +61,7 @@ public class ItemConfig {
         	if (Sponge.getRegistry().getType(DyeColor.class, strColor).isPresent())
         		return Sponge.getRegistry().getType(DyeColor.class, strColor).get();
         	else
-    			Seed.getLogger().warn("Invalid DyeColor for item " + internalName);
+    			Rpgs.getLogger().warn("Invalid DyeColor for item " + internalName);
         }
         return null;
     }
@@ -70,7 +70,7 @@ public class ItemConfig {
     	if (Sponge.getRegistry().getType(ItemType.class, strType).isPresent())
     		return Sponge.getRegistry().getType(ItemType.class, strType).get();
     	else
-			Seed.getLogger().warn("Invalid ItemType for item " + internalName);
+			Rpgs.getLogger().warn("Invalid ItemType for item " + internalName);
 		return null;
     }
 

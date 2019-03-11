@@ -7,23 +7,21 @@ import org.spongepowered.api.service.context.Context;
 import org.spongepowered.api.service.economy.Currency;
 import org.spongepowered.api.service.economy.account.Account;
 import org.spongepowered.api.service.economy.transaction.ResultType;
+import org.spongepowered.api.service.economy.transaction.TransactionResult;
 import org.spongepowered.api.service.economy.transaction.TransactionType;
-import org.spongepowered.api.service.economy.transaction.TransferResult;
 
-public class SeedTransferResult implements TransferResult {
-
+public class RpgsTransactionResult implements TransactionResult {
+	
     private Account account;
-    private Account to;
     private Currency currency;
     private BigDecimal amount;
     private Set<Context> contexts;
     private ResultType resultType;
     private TransactionType transactionType;
 
-    public SeedTransferResult(Account account, Account to, Currency currency, BigDecimal amount, Set<Context> contexts,
-                            ResultType resultType, TransactionType transactionType) {
+    public RpgsTransactionResult(Account account, Currency currency, BigDecimal amount, Set<Context> contexts,
+                               ResultType resultType, TransactionType transactionType) {
         this.account = account;
-        this.to = to;
         this.currency = currency;
         this.amount = amount;
         this.contexts = contexts;
@@ -34,11 +32,6 @@ public class SeedTransferResult implements TransferResult {
     @Override
     public Account getAccount() {
         return account;
-    }
-
-    @Override
-    public Account getAccountTo() {
-        return to;
     }
 
     @Override
@@ -65,5 +58,5 @@ public class SeedTransferResult implements TransferResult {
     public TransactionType getType() {
         return transactionType;
     }
-
+    
 }

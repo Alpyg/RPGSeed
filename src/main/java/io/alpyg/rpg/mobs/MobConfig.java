@@ -12,7 +12,7 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 import ninja.leaping.configurate.ConfigurationNode;
 
 public class MobConfig {
@@ -89,7 +89,7 @@ public class MobConfig {
 		if (Sponge.getRegistry().getType(EntityType.class, type).isPresent())
 			return Sponge.getRegistry().getType(EntityType.class, type).get();
 		else
-			Seed.getLogger().warn("Invalid Entity Type  for " + this.internalName);
+			Rpgs.getLogger().warn("Invalid Entity Type  for " + this.internalName);
 		return null;
 	}
 

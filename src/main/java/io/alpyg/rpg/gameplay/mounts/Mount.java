@@ -25,7 +25,7 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 
 public class Mount {
 
@@ -43,7 +43,7 @@ public class Mount {
 				e.getTargetEntity().remove();
 			}
 			
-		}).submit(Seed.plugin);
+		}).submit(Rpgs.plugin);
 	}
 	
 	public static void summonMount(Player p) {

@@ -16,7 +16,7 @@ import org.spongepowered.api.item.inventory.property.SlotIndex;
 import org.spongepowered.api.item.inventory.query.QueryOperationTypes;
 import org.spongepowered.api.text.Text;
 
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 
 public class EquipmentUpgradeMenu {
 	
@@ -27,7 +27,7 @@ public class EquipmentUpgradeMenu {
 		Inventory inv = Inventory.builder().of(InventoryArchetypes.CHEST)
 				.property(InventoryDimension.of(9, 1))
 				.property(InventoryTitle.of(Text.of("Equipment Upgrade")))
-				.build(Seed.plugin);
+				.build(Rpgs.plugin);
 		fillInventory(inv);
 		v.openInventory(inv);
 	}

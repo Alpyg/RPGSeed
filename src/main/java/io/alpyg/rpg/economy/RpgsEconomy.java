@@ -17,7 +17,7 @@ import com.google.common.collect.Sets;
 
 import io.alpyg.rpg.adventurer.data.AdventurerKeys;
 
-public class SeedEconomy implements EconomyService {
+public class RpgsEconomy implements EconomyService {
 	
 //	private static ConfigurationLoader<CommentedConfigurationNode> uniqueAccountsLoader;
 //	@SuppressWarnings("unused")
@@ -27,12 +27,12 @@ public class SeedEconomy implements EconomyService {
 
 	@Override
 	public Currency getDefaultCurrency() {
-		return new SeedCurrency();
+		return new RpgsCurrency();
 	}
 
 	@Override
 	public Set<Currency> getCurrencies() {
-		return Sets.newHashSet(new SeedCurrency());
+		return Sets.newHashSet(new RpgsCurrency());
 	}
 
 	@Override
@@ -47,9 +47,9 @@ public class SeedEconomy implements EconomyService {
 
 	@Override
 	public Optional<UniqueAccount> getOrCreateAccount(UUID uuid) {
-		PlayerAccount playerAccount = new PlayerAccount(uuid);
+		RpgsAccount rpgsAccount = new RpgsAccount(uuid);
 
-        return Optional.of(playerAccount);
+        return Optional.of(rpgsAccount);
 	}
 
 	@Override
@@ -102,21 +102,17 @@ public class SeedEconomy implements EconomyService {
 	}
 	
 	public static Text calculateCurrency(int amount) {
-		int gold = amount / 10000;
-		int silver = (amount - gold * 10000) / 100;
-		int copper = amount - gold * 10000 - silver * 100;
+		int gold = amount / 100;
+		int silver = amount - gold * 100;
 		Text goldText = Text.of();
 		Text silverText = Text.of();
-		Text copperText = Text.of();
 		
 		if (gold > 0)
 			goldText = Text.of(TextColors.GRAY, gold, TextColors.GOLD, "g ");
 		if (silver > 0)
 			silverText = Text.of(TextColors.GRAY, silver, TextColors.WHITE, "s ");
-		if (copper > 0)
-			copperText = Text.of(TextColors.GRAY, copper, TextColors.RED, "c ");
 		
-		return Text.of(goldText, silverText, copperText);
+		return Text.of(goldText, silverText);
 	}
 	
 }

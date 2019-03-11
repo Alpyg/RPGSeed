@@ -10,7 +10,7 @@ import org.spongepowered.api.scheduler.Task;
 
 import com.flowpowered.math.vector.Vector3d;
 
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 
 public abstract class Effect {
 
@@ -47,7 +47,7 @@ public abstract class Effect {
 				iterations--;
 			}
 			
-		}).interval(10, TimeUnit.MILLISECONDS).async().submit(Seed.plugin);
+		}).interval(10, TimeUnit.MILLISECONDS).async().submit(Rpgs.plugin);
 	}
 	
 	public abstract void onPlay();

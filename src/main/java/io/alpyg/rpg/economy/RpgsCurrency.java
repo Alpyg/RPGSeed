@@ -6,7 +6,7 @@ import org.spongepowered.api.service.economy.Currency;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-public class SeedCurrency implements Currency {
+public class RpgsCurrency implements Currency {
 
 	@Override
 	public String getId() {

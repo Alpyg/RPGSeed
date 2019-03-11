@@ -16,7 +16,7 @@ import org.spongepowered.api.item.inventory.property.InventoryTitle;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 import io.alpyg.rpg.utils.ConfigLoader;
 
 public class QuestManager {
@@ -27,7 +27,7 @@ public class QuestManager {
 	public static Text journalName = Text.of(TextColors.GRAY, "Journal");
 	private static Inventory questInv = Inventory.builder().of(InventoryArchetypes.DOUBLE_CHEST)
 			.property(InventoryTitle.of(Text.of("Quests")))
-			.build(Seed.plugin);
+			.build(Rpgs.plugin);
 
 	public static Optional<Quest> getQuest(String quest) {
 		return Optional.of(quests.get(quest));
@@ -52,7 +52,7 @@ public class QuestManager {
 	public static void openPlayerJournal(Player player) {
 		Inventory journalInv = Inventory.builder().of(InventoryArchetypes.DOUBLE_CHEST)
 				.property(InventoryTitle.of(Text.of("Quests")))
-				.build(Seed.plugin);
+				.build(Rpgs.plugin);
 		
 		for (Quest quest : quests.values())
 			if (quest.getLevel() <= player.get(Keys.EXPERIENCE_LEVEL).get())

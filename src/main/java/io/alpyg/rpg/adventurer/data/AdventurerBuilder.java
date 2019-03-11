@@ -20,8 +20,8 @@ public class AdventurerBuilder extends AbstractDataBuilder<AdventurerStats> {
 			return Optional.empty();
 		
 		int points = container.getInt(AdventurerStats.POINTS).get();
-		int vitality = container.getInt(AdventurerStats.STRENGHT).get();
-		int strength = container.getInt(AdventurerStats.DEFENCE).get();
+		int vitality = container.getInt(AdventurerStats.VITALITY).get();
+		int strength = container.getInt(AdventurerStats.STRENGHT).get();
 		int defence = container.getInt(AdventurerStats.DEFENCE).get();
 		int agility = container.getInt(AdventurerStats.AGILITY).get();
 		int magic = container.getInt(AdventurerStats.MAGIC).get();

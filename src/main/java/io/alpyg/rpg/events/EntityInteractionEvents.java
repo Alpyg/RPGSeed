@@ -2,6 +2,7 @@ package io.alpyg.rpg.events;
 
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.HandTypes;
+import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.Human;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
@@ -20,6 +21,8 @@ public class EntityInteractionEvents {
 		if (!player.getItemInHand(HandTypes.MAIN_HAND).get().isEmpty()) {
 			String itemInHand = player.getItemInHand(HandTypes.MAIN_HAND).get().getOrElse((Keys.DISPLAY_NAME), Text.of()).toPlain();
 			if (itemInHand.contains("Entity Remover")) {
+				for (Entity entity : e.getTargetEntity().getPassengers())
+					entity.remove();
 				e.getTargetEntity().remove();
 				return;
 			}

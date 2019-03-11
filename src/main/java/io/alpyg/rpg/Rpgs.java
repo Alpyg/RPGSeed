@@ -1,6 +1,7 @@
 package io.alpyg.rpg;
 
 import java.nio.file.Path;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
@@ -11,7 +12,14 @@ import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.scoreboard.Scoreboard;
+import org.spongepowered.api.scoreboard.critieria.Criteria;
+import org.spongepowered.api.scoreboard.displayslot.DisplaySlots;
+import org.spongepowered.api.scoreboard.objective.Objective;
+import org.spongepowered.api.scoreboard.objective.displaymode.ObjectiveDisplayModes;
 import org.spongepowered.api.service.user.UserStorageService;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 import com.google.inject.Inject;
 
@@ -25,8 +33,8 @@ import io.alpyg.rpg.adventurer.data.AdventurerKeys;
 import io.alpyg.rpg.adventurer.data.ImmutableAdventurerData;
 import io.alpyg.rpg.chat.WhisperCommands;
 import io.alpyg.rpg.damage.DamageHandler;
-import io.alpyg.rpg.economy.SeedEconomy;
 import io.alpyg.rpg.economy.EconomyCommands;
+import io.alpyg.rpg.economy.RpgsEconomy;
 import io.alpyg.rpg.effect.EffectCommands;
 import io.alpyg.rpg.events.EntityInteractionEvents;
 import io.alpyg.rpg.events.InteractionEvents;
@@ -63,9 +71,9 @@ import io.alpyg.rpg.utils.ConfigLoader;
 import io.alpyg.rpg.utils.Reference;
 
 @Plugin(id = Reference.ID, name = Reference.NAME, version = Reference.VERSION, description = Reference.DESCRIPTION)
-public class Seed {
+public class Rpgs {
 	
-	public static Seed plugin;
+	public static Rpgs plugin;
 	
 	@Inject	private PluginContainer container;
     
@@ -74,7 +82,7 @@ public class Seed {
 	@ConfigDir(sharedRoot = false)
     public static Path configDir;
 	
-	private SeedEconomy economy;
+	private RpgsEconomy economy;
 	private UserStorageService userStorageService;
 	public static MineskinService mineSkin;
     
@@ -83,12 +91,13 @@ public class Seed {
 		plugin = this;
 		configDir = Sponge.getConfigManager().getPluginConfig(this).getDirectory();
 		
-		economy = new SeedEconomy();
+		economy = new RpgsEconomy();
 		userStorageService = Sponge.getServiceManager().provideUnchecked(UserStorageService.class);
 		
 		registerEvents();
 		registerCommands();
 		loadConfig();
+		loadScoreboard();
 	}
 
 	@Listener
@@ -147,29 +156,30 @@ public class Seed {
 	}
 	
 	private static void registerEvents() {
-		Sponge.getEventManager().registerListeners(Seed.plugin, new PlayerEvents());
-		Sponge.getEventManager().registerListeners(Seed.plugin, new EntityInteractionEvents());
-		Sponge.getEventManager().registerListeners(Seed.plugin, new InventoryEvents());
-		Sponge.getEventManager().registerListeners(Seed.plugin, new InteractionEvents());
-		Sponge.getEventManager().registerListeners(Seed.plugin, new DamageHandler());
-		Sponge.getEventManager().registerListeners(Seed.plugin, new Mount());
+		Sponge.getEventManager().registerListeners(Rpgs.plugin, new PlayerEvents());
+		Sponge.getEventManager().registerListeners(Rpgs.plugin, new EntityInteractionEvents());
+		Sponge.getEventManager().registerListeners(Rpgs.plugin, new InventoryEvents());
+		Sponge.getEventManager().registerListeners(Rpgs.plugin, new InteractionEvents());
+		Sponge.getEventManager().registerListeners(Rpgs.plugin, new DamageHandler());
+		Sponge.getEventManager().registerListeners(Rpgs.plugin, new Mount());
 	}
 	
 	private static void registerCommands() {
-		Sponge.getCommandManager().register(Seed.plugin, AdventurerCommands.statsCommand, "status");
-		Sponge.getCommandManager().register(Seed.plugin, QuestCommands.questCommand, "quest");
-		Sponge.getCommandManager().register(Seed.plugin, BackpackCommands.backpackCommand, "bp");
-		Sponge.getCommandManager().register(Seed.plugin, MobCommands.seedMobsCommand, "sm");
-		Sponge.getCommandManager().register(Seed.plugin, ItemCommands.seedItemsCommand, "si");
-		Sponge.getCommandManager().register(Seed.plugin, GatherCommands.gatheringCommand, "gather");
-		Sponge.getCommandManager().register(Seed.plugin, EffectCommands.effectCommand, "eff");
-		Sponge.getCommandManager().register(Seed.plugin, FastTravelCommands.fasttravelCommand, "ft");
-		Sponge.getCommandManager().register(Seed.plugin, WhisperCommands.whisperCommand, "w");
-		Sponge.getCommandManager().register(Seed.plugin, NpcCommands.npcCommand, "npc");
-		Sponge.getCommandManager().register(Seed.plugin, MountCommands.mountCommand, "mount");
+		Sponge.getCommandManager().register(Rpgs.plugin, AdventurerCommands.statsCommand, "status");
+		Sponge.getCommandManager().register(Rpgs.plugin, QuestCommands.questCommand, "quest");
+		Sponge.getCommandManager().register(Rpgs.plugin, BackpackCommands.backpackCommand, "bp");
+		Sponge.getCommandManager().register(Rpgs.plugin, MobCommands.seedMobsCommand, "sm");
+		Sponge.getCommandManager().register(Rpgs.plugin, ItemCommands.seedItemsCommand, "si");
+		Sponge.getCommandManager().register(Rpgs.plugin, GatherCommands.gatheringCommand, "gather");
+		Sponge.getCommandManager().register(Rpgs.plugin, EffectCommands.effectCommand, "eff");
+		Sponge.getCommandManager().register(Rpgs.plugin, FastTravelCommands.fasttravelCommand, "ft");
+		Sponge.getCommandManager().register(Rpgs.plugin, WhisperCommands.whisperCommand, "w");
+		Sponge.getCommandManager().register(Rpgs.plugin, NpcCommands.npcCommand, "npc");
+		Sponge.getCommandManager().register(Rpgs.plugin, MountCommands.mountCommand, "mount");
 
-		Sponge.getCommandManager().register(Seed.plugin, EconomyCommands.payCommand, "pay");
-		Sponge.getCommandManager().register(Seed.plugin, EconomyCommands.balCommand, "bal");
+		Sponge.getCommandManager().register(Rpgs.plugin, EconomyCommands.payCommand, "pay");
+		Sponge.getCommandManager().register(Rpgs.plugin, EconomyCommands.balCommand, "bal");
+		Sponge.getCommandManager().register(Rpgs.plugin, EconomyCommands.setCommand, "setbal");
 	}
 	
 	private static void loadConfig() {
@@ -182,7 +192,26 @@ public class Seed {
 		FastTravel.loadFastTravelLocations();
 	}
 	
-	public static SeedEconomy getEconomy() {
+	private static void	loadScoreboard() {
+		Optional<Scoreboard> serverScoreboard = Sponge.getServer().getServerScoreboard();
+        if (serverScoreboard.isPresent()) {
+            Scoreboard globalScoreboard = serverScoreboard.get();
+            globalScoreboard.getObjective("HealthBar").ifPresent(globalScoreboard::removeObjective);
+
+            Objective objective = Objective.builder()
+            		.name("HealthBar")
+            		.displayName(Text.of(TextColors.DARK_RED, "%"))
+            		.criterion(Criteria.DUMMY)
+            		.objectiveDisplayMode(ObjectiveDisplayModes.INTEGER)
+            		.build();
+            globalScoreboard.addObjective(objective);
+            globalScoreboard.updateDisplaySlot(objective, DisplaySlots.BELOW_NAME);
+        } else {
+        	Rpgs.getLogger().warn("Global scoreboard couldn't be loaded");
+        }
+	}
+	
+	public static RpgsEconomy getEconomy() {
 		return plugin.economy;
 	}
 	

@@ -27,7 +27,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import cz.creeper.mineskinsponge.SkinRecord;
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 import io.alpyg.rpg.adventurer.data.AdventurerKeys;
 
 public class Backpacks {
@@ -44,12 +44,12 @@ public class Backpacks {
 			inv = Inventory.builder().of(InventoryArchetypes.DOUBLE_CHEST)
 				.property(InventoryDimension.of(9, 3))
 				.property(InventoryTitle.of(Text.of("Backpack")))
-				.build(Seed.plugin);
+				.build(Rpgs.plugin);
 		else							// If looking at another's backpack
 			inv = Inventory.builder().of(InventoryArchetypes.DOUBLE_CHEST)
 				.property(InventoryDimension.of(9, 3))
 				.property(InventoryTitle.of(Text.of(target.getName() + "'s Backpack")))
-				.build(Seed.plugin);
+				.build(Rpgs.plugin);
 
 		if (backpack != null)			// Fill backpack slots accordingly
 			for (int i = 0; i < 35; i++)
@@ -129,7 +129,7 @@ public class Backpacks {
 		backpack.offer(Keys.SKULL_TYPE, SkullTypes.PLAYER);
 		backpack.offer(Keys.DISPLAY_NAME, backpackName);
 		
-		CompletableFuture<SkinRecord> future = Seed.mineSkin.getSkin(Paths.get(Seed.configDir + File.separator + "Assets" + File.separator + "backpack.png"));
+		CompletableFuture<SkinRecord> future = Rpgs.mineSkin.getSkin(Paths.get(Rpgs.configDir + File.separator + "Assets" + File.separator + "backpack.png"));
 		future.thenAccept(skinRecord -> {
 			skinRecord.apply(backpack);
 		});

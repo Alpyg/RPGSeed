@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 import io.alpyg.rpg.gameplay.gathering.GatherConfig;
 import io.alpyg.rpg.items.ItemConfig;
 import io.alpyg.rpg.mobs.MobConfig;
@@ -20,7 +20,7 @@ public class ConfigLoader {
 	private static ConfigurationLoader<CommentedConfigurationNode> configLoader;
 	
 	public static void loadConfig(String folder) {
-		File configDir = new File(Seed.configDir + File.separator +  folder);
+		File configDir = new File(Rpgs.configDir + File.separator +  folder);
 		
 		File[] configFiles = configDir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {

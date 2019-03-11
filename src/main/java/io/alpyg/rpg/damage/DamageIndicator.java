@@ -17,13 +17,12 @@ import org.spongepowered.api.world.World;
 
 import com.flowpowered.math.vector.Vector3d;
 
-import io.alpyg.rpg.Seed;
+import io.alpyg.rpg.Rpgs;
 
 public class DamageIndicator {
 
 	public DamageIndicator(Location<World> location, double damage) {
-		World world = location.getExtent();
-		Entity damageIndicator = world.createEntity(EntityTypes.ARMOR_STAND, new Vector3d(location.getPosition().add(new Vector3d(0f, 1f, 0f))));
+		Entity damageIndicator = location.getExtent().createEntity(EntityTypes.ARMOR_STAND, new Vector3d(location.getPosition().add(new Vector3d(0f, 1f, 0f))));
 
 		damageIndicator.offer(Keys.CUSTOM_NAME_VISIBLE, true);
 		damageIndicator.offer(Keys.DISPLAY_NAME, Text.of(TextColors.RED, "-", Math.round(damage)));
@@ -33,9 +32,9 @@ public class DamageIndicator {
 
 		try (StackFrame frame = Sponge.getCauseStackManager().pushCauseFrame()) {
 			frame.addContext(EventContextKeys.SPAWN_TYPE, SpawnTypes.PLUGIN);
-			world.spawnEntity(damageIndicator);
+			location.getExtent().spawnEntity(damageIndicator);
 		}
 		
-		Task.builder().execute(() -> damageIndicator.remove()).delay(500,  TimeUnit.MILLISECONDS).submit(Seed.plugin);
+		Task.builder().execute(() -> damageIndicator.remove()).delay(500,  TimeUnit.MILLISECONDS).submit(Rpgs.plugin);
 	}
 }
