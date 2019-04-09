@@ -19,24 +19,24 @@ public class AdventurerStats implements DataSerializable {
     public static final DataQuery AGILITY = DataQuery.of("Agility");
     public static final DataQuery MAGIC = DataQuery.of("Magic");
 
-    public int total_points = 0;
-    public int points = 0;
-    public int vitality = 0;
-    public int strength = 0;
-    public int defence = 0;
-    public int agility = 0;
-    public int magic = 0;
+    public short total_points = 0;
+    public short points = 0;
+    public short vitality = 0;
+    public short strength = 0;
+    public short defence = 0;
+    public short agility = 0;
+    public short magic = 0;
 
     public AdventurerStats() { }
     
-    public AdventurerStats(int points, int vitality, int strength, int defence, int agility, int magic) {
+    public AdventurerStats(short points, short vitality, short strength, short defence, short agility, short magic) {
     	this.points = points;
     	this.vitality = vitality;
     	this.strength = strength;
     	this.defence = defence;
     	this.agility = agility;
     	this.magic = magic;
-    	this.total_points = points + vitality + strength + defence + agility + magic;
+    	this.total_points = (short) (points + vitality + strength + defence + agility + magic);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class AdventurerStats implements DataSerializable {
 		return magic * 5;
 	}
 	
-	public static void setStat(Player p, String stat, int amount) {
+	public static void setStat(Player p, String stat, short amount) {
 		if (stat == "Points")
 			p.get(AdventurerKeys.STATS).get().points = amount;
 		else if (stat == "Vitality")

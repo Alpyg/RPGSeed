@@ -119,7 +119,7 @@ public class AdventurerData extends AbstractData<AdventurerData, ImmutableAdvent
         this.mana = view.getDouble(AdventurerKeys.MANA.getQuery()).get();
         this.balance = view.getInt(AdventurerKeys.BALANCE.getQuery()).get();
         this.backpackData = view.getString(AdventurerKeys.BACKPACK_DATA.getQuery()).get();
-        this.backpackSize = view.getInt(AdventurerKeys.BACKPACK_SIZE.getQuery()).get();
+        this.backpackSize = view.getByte(AdventurerKeys.BACKPACK_SIZE.getQuery()).get();
         
         
         return Optional.of(this);

@@ -47,7 +47,7 @@ public class AdventurerCommands {
 	        	
 	        	Player p = (Player) args.getOne("Player").get();
 	        	String stat = (String) args.getOne("Stat").get();
-	        	int amount = (int) args.getOne("Amount").get();
+	        	short amount = (short) args.getOne("Amount").get();
 	        	
 	        	src.sendMessage(Text.of(TextColors.DARK_AQUA, p.getName(), "'s ",TextColors.AQUA,
 	        			stat, TextColors.DARK_AQUA, " stat has been set to ", TextColors.AQUA,
