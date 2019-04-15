@@ -1,7 +1,6 @@
 package io.alpyg.rpg;
 
 import java.nio.file.Path;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
@@ -12,14 +11,7 @@ import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.scoreboard.Scoreboard;
-import org.spongepowered.api.scoreboard.critieria.Criteria;
-import org.spongepowered.api.scoreboard.displayslot.DisplaySlots;
-import org.spongepowered.api.scoreboard.objective.Objective;
-import org.spongepowered.api.scoreboard.objective.displaymode.ObjectiveDisplayModes;
 import org.spongepowered.api.service.user.UserStorageService;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 
 import com.google.inject.Inject;
 
@@ -36,8 +28,8 @@ import io.alpyg.rpg.damage.DamageHandler;
 import io.alpyg.rpg.economy.EconomyCommands;
 import io.alpyg.rpg.economy.RpgsEconomy;
 import io.alpyg.rpg.effect.EffectCommands;
-import io.alpyg.rpg.events.EntityInteractionEvents;
-import io.alpyg.rpg.events.InteractionEvents;
+import io.alpyg.rpg.events.InteractEntityEvents;
+import io.alpyg.rpg.events.InteractEvents;
 import io.alpyg.rpg.events.InventoryEvents;
 import io.alpyg.rpg.events.PlayerEvents;
 import io.alpyg.rpg.gameplay.backpack.BackpackCommands;
@@ -50,6 +42,11 @@ import io.alpyg.rpg.gameplay.gathering.data.GatherKeys;
 import io.alpyg.rpg.gameplay.gathering.data.ImmutableGatherData;
 import io.alpyg.rpg.gameplay.mounts.Mount;
 import io.alpyg.rpg.gameplay.mounts.MountCommands;
+import io.alpyg.rpg.gameplay.shop.ShopCommands;
+import io.alpyg.rpg.gameplay.shop.data.ImmutableShopData;
+import io.alpyg.rpg.gameplay.shop.data.ShopData;
+import io.alpyg.rpg.gameplay.shop.data.ShopDataBuilder;
+import io.alpyg.rpg.gameplay.shop.data.ShopKeys;
 import io.alpyg.rpg.items.ItemCommands;
 import io.alpyg.rpg.items.data.ImmutableItemData;
 import io.alpyg.rpg.items.data.ItemData;
@@ -97,7 +94,6 @@ public class Rpgs {
 		registerEvents();
 		registerCommands();
 		loadConfig();
-		loadScoreboard();
 	}
 
 	@Listener
@@ -105,6 +101,7 @@ public class Rpgs {
 		// Create Keys
 		AdventurerKeys.registerKeys();
 		NpcKeys.registerKeys();
+		ShopKeys.registerKeys();
 		ItemKeys.registerKeys();
 		MobKeys.registerKeys();
 		GatherKeys.registerKeys();
@@ -128,6 +125,14 @@ public class Rpgs {
 			.dataClass(NpcData.class)
 			.immutableClass(ImmutableNpcData.class)
 			.builder(new NpcDataBuilder())
+			.buildAndRegister(this.container);
+		
+		DataRegistration.builder()
+			.dataName("Shop Data")
+			.manipulatorId("shop_data")
+			.dataClass(ShopData.class)
+			.immutableClass(ImmutableShopData.class)
+			.builder(new ShopDataBuilder())
 			.buildAndRegister(this.container);
 		
 		DataRegistration.builder()
@@ -157,9 +162,9 @@ public class Rpgs {
 	
 	private static void registerEvents() {
 		Sponge.getEventManager().registerListeners(Rpgs.plugin, new PlayerEvents());
-		Sponge.getEventManager().registerListeners(Rpgs.plugin, new EntityInteractionEvents());
+		Sponge.getEventManager().registerListeners(Rpgs.plugin, new InteractEntityEvents());
 		Sponge.getEventManager().registerListeners(Rpgs.plugin, new InventoryEvents());
-		Sponge.getEventManager().registerListeners(Rpgs.plugin, new InteractionEvents());
+		Sponge.getEventManager().registerListeners(Rpgs.plugin, new InteractEvents());
 		Sponge.getEventManager().registerListeners(Rpgs.plugin, new DamageHandler());
 		Sponge.getEventManager().registerListeners(Rpgs.plugin, new Mount());
 	}
@@ -175,6 +180,7 @@ public class Rpgs {
 		Sponge.getCommandManager().register(Rpgs.plugin, FastTravelCommands.fasttravelCommand, "ft");
 		Sponge.getCommandManager().register(Rpgs.plugin, WhisperCommands.whisperCommand, "w");
 		Sponge.getCommandManager().register(Rpgs.plugin, NpcCommands.npcCommand, "npc");
+		Sponge.getCommandManager().register(Rpgs.plugin, ShopCommands.shopCommand, "shop");
 		Sponge.getCommandManager().register(Rpgs.plugin, MountCommands.mountCommand, "mount");
 
 		Sponge.getCommandManager().register(Rpgs.plugin, EconomyCommands.payCommand, "pay");
@@ -184,31 +190,13 @@ public class Rpgs {
 	
 	private static void loadConfig() {
 		ConfigLoader.loadConfig("Npcs");
-		ConfigLoader.loadConfig("Mobs");
 		ConfigLoader.loadConfig("Items");
+		ConfigLoader.loadConfig("Mobs");
+		ConfigLoader.loadConfig("Shops");
 		ConfigLoader.loadConfig("Gathering");
 		
 		QuestManager.loadQuests();
 		FastTravel.loadFastTravelLocations();
-	}
-	
-	private static void	loadScoreboard() {
-		Optional<Scoreboard> serverScoreboard = Sponge.getServer().getServerScoreboard();
-        if (serverScoreboard.isPresent()) {
-            Scoreboard globalScoreboard = serverScoreboard.get();
-            globalScoreboard.getObjective("HealthBar").ifPresent(globalScoreboard::removeObjective);
-
-            Objective objective = Objective.builder()
-            		.name("HealthBar")
-            		.displayName(Text.of(TextColors.DARK_RED, "%"))
-            		.criterion(Criteria.DUMMY)
-            		.objectiveDisplayMode(ObjectiveDisplayModes.INTEGER)
-            		.build();
-            globalScoreboard.addObjective(objective);
-            globalScoreboard.updateDisplaySlot(objective, DisplaySlots.BELOW_NAME);
-        } else {
-        	Rpgs.getLogger().warn("Global scoreboard couldn't be loaded");
-        }
 	}
 	
 	public static RpgsEconomy getEconomy() {

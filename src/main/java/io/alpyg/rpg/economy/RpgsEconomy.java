@@ -102,17 +102,21 @@ public class RpgsEconomy implements EconomyService {
 	}
 	
 	public static Text calculateCurrency(int amount) {
-		int gold = amount / 100;
-		int silver = amount - gold * 100;
+		int gold = amount / 10000;
+		int silver = (amount - gold * 10000) / 100;
+		int copper = amount - gold * 10000 - silver * 100;
 		Text goldText = Text.of();
 		Text silverText = Text.of();
+		Text copperText = Text.of();
 		
 		if (gold > 0)
-			goldText = Text.of(TextColors.GRAY, gold, TextColors.GOLD, "g ");
+			goldText = Text.of(TextColors.GRAY, gold, TextColors.DARK_GRAY, "g");
 		if (silver > 0)
-			silverText = Text.of(TextColors.GRAY, silver, TextColors.WHITE, "s ");
+			silverText = Text.of(TextColors.GRAY, silver, TextColors.DARK_GRAY, "s");
+		if (copper > 0)
+			copperText = Text.of(TextColors.GRAY, copper, TextColors.DARK_GRAY, "c");
 		
-		return Text.of(goldText, silverText);
+		return Text.of(goldText, silverText, copperText);
 	}
 	
 }

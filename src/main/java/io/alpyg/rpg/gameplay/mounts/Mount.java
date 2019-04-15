@@ -2,7 +2,6 @@ package io.alpyg.rpg.gameplay.mounts;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
@@ -21,11 +20,8 @@ import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.Carrier;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-
-import io.alpyg.rpg.Rpgs;
 
 public class Mount {
 
@@ -35,40 +31,12 @@ public class Mount {
 	}
 	
 	@Listener
-	public void onMount(RideEntityEvent.Dismount e, @First Player player) {
-		Task.builder().delay(100, TimeUnit.MILLISECONDS).execute(new Runnable() {
-			
-			@Override
-			public void run() {
-				e.getTargetEntity().remove();
-			}
-			
-		}).submit(Rpgs.plugin);
+	public void onDismount(RideEntityEvent.Dismount e, @First Player player) {
+		player.setLocation(e.getTargetEntity().getLocation());
+		e.getTargetEntity().remove();
 	}
 	
-	public static void summonMount(Player p) {
-//		Entity stand = p.getLocation().getExtent().createEntity(EntityTypes.ARMOR_STAND, p.getLocation().getPosition());
-//		
-//		Equipable entityEquipment = (Equipable) stand;
-//		entityEquipment.equip(EquipmentTypes.HEADWEAR, ItemStack.of(ItemTypes.SKULL));
-//		entityEquipment.equip(EquipmentTypes.MAIN_HAND, ItemStack.of(ItemTypes.BANNER));
-//		entityEquipment.equip(EquipmentTypes.OFF_HAND, ItemStack.of(ItemTypes.BANNER));
-//		
-//		stand.offer(Keys.DISPLAY_NAME, Text.of("lol"));
-//		stand.offer(Keys.CUSTOM_NAME_VISIBLE, true);
-//		stand.offer(Keys.RIGHT_ARM_ROTATION, new Vector3d(190, 330, 0));
-//		stand.offer(Keys.LEFT_ARM_ROTATION, new Vector3d(190, -330, 0));
-//		stand.offer(Keys.ARMOR_STAND_HAS_ARMS, true);
-//		stand.offer(Keys.ARMOR_STAND_IS_SMALL, true);
-//		stand.offer(Keys.INVISIBLE, true);
-//		
-//		try (StackFrame frame = Sponge.getCauseStackManager().pushCauseFrame()) {
-//			frame.addContext(EventContextKeys.SPAWN_TYPE, SpawnTypes.PLUGIN);
-//			p.getLocation().getExtent().spawnEntity(stand);
-//		}
-//
-//		stand.addPassenger(p);
-		
+	public static void summonMount(Player p) {		
 		Entity mount = p.getLocation().getExtent().createEntity(EntityTypes.HORSE, p.getLocation().getPosition());
 		
 		mount.offer(Keys.HORSE_STYLE, HorseStyles.NONE);

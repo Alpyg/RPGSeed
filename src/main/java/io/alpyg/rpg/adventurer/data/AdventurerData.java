@@ -61,27 +61,27 @@ public class AdventurerData extends AbstractData<AdventurerData, ImmutableAdvent
 	}
 
     public Value<AdventurerStats> stats() {
-        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.STATS, stats);
+        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.STATS, this.stats);
     }
 
     public Value<Double> max_mana() {
-        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.MAX_MANA, max_mana);
+        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.MAX_MANA, this.max_mana);
     }
 
     public Value<Double> mana() {
-        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.MANA, mana);
+        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.MANA, this.mana);
     }
 
     public Value<Integer> balance() {
-        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BALANCE, balance);
+        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BALANCE, this.balance);
     }
 
     public Value<String> backpackData() {
-        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BACKPACK_DATA, backpackData);
+        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BACKPACK_DATA, this.backpackData);
     }
 
     public Value<Integer> backpackSize() {
-        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BACKPACK_SIZE, backpackSize);
+        return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BACKPACK_SIZE, this.backpackSize);
     }
 
     @Override
@@ -119,8 +119,7 @@ public class AdventurerData extends AbstractData<AdventurerData, ImmutableAdvent
         this.mana = view.getDouble(AdventurerKeys.MANA.getQuery()).get();
         this.balance = view.getInt(AdventurerKeys.BALANCE.getQuery()).get();
         this.backpackData = view.getString(AdventurerKeys.BACKPACK_DATA.getQuery()).get();
-        this.backpackSize = view.getInt(AdventurerKeys.BACKPACK_SIZE.getQuery()).get();
-        
+        this.backpackSize = view.getByte(AdventurerKeys.BACKPACK_SIZE.getQuery()).get();
         
         return Optional.of(this);
     }
@@ -150,4 +149,5 @@ public class AdventurerData extends AbstractData<AdventurerData, ImmutableAdvent
                 .set(AdventurerKeys.BACKPACK_DATA.getQuery(), this.backpackData)
                 .set(AdventurerKeys.BACKPACK_SIZE.getQuery(), this.backpackSize);
 	}
+	
 }

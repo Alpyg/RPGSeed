@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import io.alpyg.rpg.Rpgs;
 import io.alpyg.rpg.gameplay.gathering.GatherConfig;
+import io.alpyg.rpg.gameplay.shop.ShopConfig;
 import io.alpyg.rpg.items.ItemConfig;
 import io.alpyg.rpg.mobs.MobConfig;
 import io.alpyg.rpg.npcs.NpcConfig;
@@ -41,6 +42,8 @@ public class ConfigLoader {
 			for(ConfigurationNode configNode : configFile.getChildrenMap().values()) {
 				if (_configFile.getParentFile().getName().equals("Npcs"))
 					new NpcConfig(configNode.getKey().toString(), configNode);
+				else if (_configFile.getParentFile().getName().equals("Shops"))
+					new ShopConfig(configNode.getKey().toString(), configNode);
 				else if (_configFile.getParentFile().getName().equals("Mobs"))
 					new MobConfig(configNode.getKey().toString(), configNode);
 				else if (_configFile.getParentFile().getName().equals("Items"))

@@ -3,17 +3,18 @@ package io.alpyg.rpg.events;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.Entity;
-import org.spongepowered.api.entity.living.Human;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.text.Text;
 
+import io.alpyg.rpg.gameplay.shop.Shop;
+import io.alpyg.rpg.gameplay.shop.data.ShopKeys;
 import io.alpyg.rpg.npcs.data.NpcKeys;
 import io.alpyg.rpg.quests.QuestManager;
 
-public class EntityInteractionEvents {
+public class InteractEntityEvents {
 
 	@Listener
 	public void on(InteractEntityEvent.Secondary.MainHand e, @First Player player) {	
@@ -37,10 +38,13 @@ public class EntityInteractionEvents {
 //			}
 		}
 		
-		if (e.getTargetEntity() instanceof Human) {
-			if (e.getTargetEntity().get(NpcKeys.QUEST).isPresent())
-				QuestManager.getQuest(e.getTargetEntity().get(NpcKeys.QUEST).get()).get().openQuestView(player);
+		if (e.getTargetEntity().get(NpcKeys.QUEST).isPresent()) {
+			QuestManager.getQuest(e.getTargetEntity().get(NpcKeys.QUEST).get()).get().openQuestView(player);
 			return;
+		}
+
+		else if (e.getTargetEntity().get(ShopKeys.SHOP_DATA).isPresent()) {
+			Shop.viewShop(e.getTargetEntity(), player);
 		}
 	}
 	

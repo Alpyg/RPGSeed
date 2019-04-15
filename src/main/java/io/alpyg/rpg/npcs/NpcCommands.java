@@ -24,7 +24,7 @@ public class NpcCommands {
         		Player player = (Player) src;
         		NpcConfig npc = (NpcConfig) args.getOne("Npc").get();
         		npc.spawnNpc(player.getLocation());
-	        	player.sendMessage(Text.of(TextColors.GREEN, "Spawned Npc ", npc.displayName));
+	        	player.sendMessage(Text.of(TextColors.GREEN, "Spawned Npc ", npc.getDisplayName()));
 	        	
 	        	return CommandResult.success();	
 	        })

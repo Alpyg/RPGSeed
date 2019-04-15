@@ -17,10 +17,10 @@ public class NpcConfig {
 
 	public static Map<String, NpcConfig> npcs = new HashMap<String, NpcConfig>();
 	
-	public String internalName;
-	public Text displayName;
-	public boolean invulnerable;
-	public String quest;
+	private String internalName;
+	private Text displayName;
+	private boolean invulnerable;
+	private String quest;
 	
 	public NpcConfig(String internalName, ConfigurationNode config) {
 		this.internalName = internalName;
@@ -33,6 +33,22 @@ public class NpcConfig {
 	
 	public void spawnNpc(Location<World> location) {
 		new Npc(location, this);
+	}
+	
+	public String getInternalName() {
+		return internalName;
+	}
+
+	public Text getDisplayName() {
+		return displayName;
+	}
+
+	public boolean isInvulnerable() {
+		return invulnerable;
+	}
+
+	public String getQuest() {
+		return quest;
 	}
 	
 	public static Supplier<Collection<String>> getNpcs() {
@@ -56,4 +72,5 @@ public class NpcConfig {
 			
 		};
 	}
+	
 }

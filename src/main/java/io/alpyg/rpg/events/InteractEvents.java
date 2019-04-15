@@ -7,6 +7,7 @@ import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.InteractBlockEvent;
+import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.item.inventory.InteractItemEvent;
 import org.spongepowered.api.text.Text;
@@ -17,10 +18,10 @@ import io.alpyg.rpg.crafting.EquipmentUpgradeMenu;
 import io.alpyg.rpg.gameplay.backpack.Backpacks;
 import io.alpyg.rpg.quests.QuestManager;
 
-public class InteractionEvents {
+public class InteractEvents {
 	
 	@Listener
-	public void onItemRightClick(InteractItemEvent.Secondary e, @First Player player) {
+	public void onItemRightClick(InteractItemEvent.Secondary.MainHand e, @First Player player) {
 		Text item = e.getItemStack().get(Keys.DISPLAY_NAME).orElse(Text.of());
 		if (item.equals(Backpacks.backpackName)) {
 			e.setCancelled(true);
@@ -34,11 +35,17 @@ public class InteractionEvents {
 	}
 	
 	@Listener
+	public void onEntityRightClick(InteractEntityEvent.Secondary.MainHand e, @First Player player) {
+		if (e.getTargetEntity() instanceof Player) return;
+		
+	}
+	
+	@Listener
 	public void onBlockRightClick(InteractBlockEvent.Secondary.MainHand e, @First Player player) {
 		BlockType type = e.getTargetBlock().getState().getType();
 		// Status Menu
 		if (type.equals(BlockTypes.ENCHANTING_TABLE)) {
-			if (e.getTargetBlock().getLocation().get().sub(0, 1, 0).getBlock().getType().equals(BlockTypes.CRAFTING_TABLE)) {
+			if (e.getTargetBlock().getLocation().get().sub(0, 1, 0).getBlock().getType().equals(BlockTypes.BEDROCK)) {
 				e.setCancelled(true);
 				e.setUseItemResult(Tristate.FALSE);
 				AdventurerStatsMenu.openStatusMenu(player);
@@ -47,7 +54,7 @@ public class InteractionEvents {
 		
 		// Equipment Upgrade Menu
 		else if (type.equals(BlockTypes.ANVIL)) {
-			if (e.getTargetBlock().getLocation().get().sub(0, 1, 0).getBlock().getType().equals(BlockTypes.CRAFTING_TABLE)) {
+			if (e.getTargetBlock().getLocation().get().sub(0, 1, 0).getBlock().getType().equals(BlockTypes.BEDROCK)) {
 				e.setCancelled(true);
 				e.setUseItemResult(Tristate.FALSE);
 				EquipmentUpgradeMenu.openEquipmentUpgrade(player);
