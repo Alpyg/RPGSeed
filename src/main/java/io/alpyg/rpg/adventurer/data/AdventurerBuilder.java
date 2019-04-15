@@ -19,12 +19,12 @@ public class AdventurerBuilder extends AbstractDataBuilder<AdventurerStats> {
 		if (!container.contains(AdventurerStats.POINTS, AdventurerStats.VITALITY, AdventurerStats.STRENGHT, AdventurerStats.DEFENCE, AdventurerStats.AGILITY, AdventurerStats.MAGIC))
 			return Optional.empty();
 		
-		int points = container.getInt(AdventurerStats.POINTS).get();
-		int vitality = container.getInt(AdventurerStats.VITALITY).get();
-		int strength = container.getInt(AdventurerStats.STRENGHT).get();
-		int defence = container.getInt(AdventurerStats.DEFENCE).get();
-		int agility = container.getInt(AdventurerStats.AGILITY).get();
-		int magic = container.getInt(AdventurerStats.MAGIC).get();
+		int points = container.getShort(AdventurerStats.POINTS).get();
+		int vitality = container.getShort(AdventurerStats.VITALITY).get();
+		int strength = container.getShort(AdventurerStats.STRENGHT).get();
+		int defence = container.getShort(AdventurerStats.DEFENCE).get();
+		int agility = container.getShort(AdventurerStats.AGILITY).get();
+		int magic = container.getShort(AdventurerStats.MAGIC).get();
 		
 		return Optional.of(new AdventurerStats(points, vitality, strength, defence, agility, magic));
 	}
