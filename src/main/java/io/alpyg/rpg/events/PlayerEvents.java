@@ -1,23 +1,16 @@
 package io.alpyg.rpg.events;
 
-import java.math.BigDecimal;
-
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.event.entity.DestructEntityEvent.Death;
 import org.spongepowered.api.event.entity.living.humanoid.player.RespawnPlayerEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 
-import io.alpyg.rpg.Rpgs;
 import io.alpyg.rpg.adventurer.AdventurerStats;
 import io.alpyg.rpg.adventurer.AdventurerUI;
-import io.alpyg.rpg.adventurer.data.AdventurerData;
-import io.alpyg.rpg.economy.RpgsAccount;
-import io.alpyg.rpg.gameplay.backpack.Backpacks;
+import io.alpyg.rpg.data.adventurer.AdventurerData;
 
 public class PlayerEvents {
 	
@@ -26,23 +19,16 @@ public class PlayerEvents {
 		if (!player.get(AdventurerData.class).isPresent())
 			player.offer(player.getOrCreate(AdventurerData.class).get());
 		
-		if (!player.getInventory().contains(Backpacks.itemBackpack()))
-			player.getInventory().offer(Backpacks.itemBackpack());
+//		if (!player.getInventory().contains(Backpacks.itemBackpack()))
+//			player.getInventory().offer(Backpacks.itemBackpack());
 		
 		AdventurerStats.updatePlayerStats(player);
-//		player.getInventory().offer(GatherTools.getMiningTool().copy());
-		
-		Cause cause = Cause.builder()
-                .append(Rpgs.getContainer())
-                .build(EventContext.empty());
-		
-		RpgsAccount account = (RpgsAccount) Rpgs.getEconomy().getOrCreateAccount(player.getUniqueId()).get();
-		account.setBalance(Rpgs.getEconomy().getDefaultCurrency(), BigDecimal.valueOf(77777777), cause);
 	}
 	
 	@Listener
 	public void onPlayerDisconnect(ClientConnectionEvent.Disconnect e, @First Player p) {
-		AdventurerUI.gui.get(e.getTargetEntity().getUniqueId()).stop();
+		if (AdventurerUI.gui.containsKey(e.getTargetEntity().getUniqueId()))
+			AdventurerUI.gui.get(e.getTargetEntity().getUniqueId()).stop();
 		for (Entity passenger : p.getPassengers()) {
 			passenger.remove();
 		}

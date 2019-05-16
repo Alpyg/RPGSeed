@@ -37,9 +37,9 @@ public class MobCommands {
 
 	        	Player player = (Player) src;
 	        	
-	        	MobConfig mob = (MobConfig) args.getOne("Mob").get();
-	        	player.sendMessage(Text.of(TextColors.GREEN, "Spawned ", mob.displayName));
-	        	mob.spawnMob(player.getLocation());
+	        	MobConfig mobConfig = (MobConfig) args.getOne("Mob").get();
+	        	player.sendMessage(Text.of(TextColors.GREEN, "Spawned ", mobConfig.internalName));
+	        	mobConfig.spawnMob(player.getLocation(), mobConfig);
 	        	
 	        	return CommandResult.success();
 	        })

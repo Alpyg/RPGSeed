@@ -17,11 +17,11 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import io.alpyg.rpg.Rpgs;
-import io.alpyg.rpg.adventurer.data.AdventurerKeys;
+import io.alpyg.rpg.data.adventurer.AdventurerKeys;
+import io.alpyg.rpg.data.item.ItemKeys;
 import io.alpyg.rpg.economy.RpgsEconomy;
 import io.alpyg.rpg.gameplay.InventorySerializer;
 import io.alpyg.rpg.gameplay.shop.data.ShopKeys;
-import io.alpyg.rpg.items.data.ItemKeys;
 
 public abstract class Shop {
 	

@@ -81,8 +81,8 @@ public class MobConfig {
         	mobs.put(internalName, this);
 	}
 	
-	public void spawnMob(Location<World> location) {
-		new Mob(location, this);
+	public void spawnMob(Location<World> location, MobConfig config) {
+		new Mob(location, config);
 	}
 	
 	private EntityType setEntityType(String type) {

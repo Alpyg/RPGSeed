@@ -1,4 +1,4 @@
-package io.alpyg.rpg.mobs.data;
+package io.alpyg.rpg.data.mob;
 
 import java.util.Optional;
 

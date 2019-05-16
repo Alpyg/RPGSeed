@@ -9,9 +9,9 @@ import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.text.Text;
 
+import io.alpyg.rpg.data.npc.NpcKeys;
 import io.alpyg.rpg.gameplay.shop.Shop;
 import io.alpyg.rpg.gameplay.shop.data.ShopKeys;
-import io.alpyg.rpg.npcs.data.NpcKeys;
 import io.alpyg.rpg.quests.QuestManager;
 
 public class InteractEntityEvents {

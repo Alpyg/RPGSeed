@@ -24,40 +24,31 @@ import org.spongepowered.api.text.format.TextColors;
 
 import cz.creeper.mineskinsponge.SkinRecord;
 import io.alpyg.rpg.Rpgs;
-import io.alpyg.rpg.adventurer.data.AdventurerKeys;
+import io.alpyg.rpg.data.backpack.BackpackData;
+import io.alpyg.rpg.data.backpack.BackpackKeys;
 import io.alpyg.rpg.gameplay.InventorySerializer;
 
 public abstract class Backpacks {
 	
-	public static Text backpackName = Text.of(TextColors.AQUA, "Backpack");
-	
-	public static ItemStack backpack = ItemStack.of(ItemTypes.SKULL);
-	
-	public static void openBackpack(Player viewer, Player target) {
-		Map<Integer, ItemStack> backpack = InventorySerializer.deserializeInventory(target.get(AdventurerKeys.BACKPACK_DATA).get());
+	public static void openBackpack(Player player, ItemStack backpack) {
+		Map<Integer, ItemStack> backpackMap = InventorySerializer.deserializeInventory(backpack.get(BackpackKeys.DATA).get());
 		Inventory inv;
 		
-		if (viewer.equals(target))		// If looking at own backpack
-			inv = Inventory.builder().of(InventoryArchetypes.DOUBLE_CHEST)
-				.property(InventoryDimension.of(9, 3))
-				.property(InventoryTitle.of(Text.of("Backpack")))
-				.build(Rpgs.plugin);
-		else							// If looking at another's backpack
-			inv = Inventory.builder().of(InventoryArchetypes.DOUBLE_CHEST)
-				.property(InventoryDimension.of(9, 3))
-				.property(InventoryTitle.of(Text.of(target.getName() + "'s Backpack")))
-				.build(Rpgs.plugin);
+		inv = Inventory.builder().of(InventoryArchetypes.DOUBLE_CHEST)
+			.property(InventoryDimension.of(9, backpack.get(BackpackKeys.SIZE).get()))
+			.property(InventoryTitle.of(Text.of("Backpack")))
+			.build(Rpgs.plugin);
 
-		if (backpack != null)			// Fill backpack slots accordingly
+		if (backpackMap != null)
 			for (int i = 0; i < 35; i++)
-				if (backpack.containsKey(i))
+				if (backpackMap.containsKey(i))
 					inv.query(QueryOperationTypes.INVENTORY_PROPERTY.of(SlotIndex.of(i)))
-						.set(backpack.get(i));
+						.set(backpackMap.get(i));
 
-		viewer.openInventory(inv);
+		player.openInventory(inv);
 	}
 	
-	public static String saveBackpack(Container container) {	// Get each slot's Index and ItemStack and store them in a map
+	public static String saveBackpack(Container container) {
 		Map<Integer, DataContainer> backpack = new HashMap<Integer, DataContainer>();
 		int index = 0;
 		for (Inventory i : container.first().slots()) {
@@ -69,23 +60,24 @@ public abstract class Backpacks {
 		return InventorySerializer.serializeInventory(backpack);
 	}
 	
-	public static void upgradeBackpack(Player player) {		// Upgrade backpack
-		int size = player.get(AdventurerKeys.BACKPACK_SIZE).get();
-		if (size < 7)
-			player.offer(AdventurerKeys.BACKPACK_SIZE, size+1);
+	public static void upgradeBackpack(ItemStack backpack) {
+		int size = backpack.get(BackpackKeys.SIZE).get();
+		if (size < 6)
+			backpack.offer(BackpackKeys.SIZE, size+1);
 	}
 	
-	public static ItemStack itemBackpack() {		// Backpack ItemStack
-		return backpack.copy();
-	}
-	
-	static {
+	public static ItemStack backpackItem() {
+		ItemStack backpack = ItemStack.of(ItemTypes.SKULL);
+		backpack.offer(backpack.getOrCreate(BackpackData.class).get());
 		backpack.offer(Keys.SKULL_TYPE, SkullTypes.PLAYER);
-		backpack.offer(Keys.DISPLAY_NAME, backpackName);
+		backpack.offer(Keys.DISPLAY_NAME, Text.of(TextColors.AQUA, "Backpack"));
 		
 		CompletableFuture<SkinRecord> future = Rpgs.mineSkin.getSkin(Paths.get(Rpgs.configDir + File.separator + "Assets" + File.separator + "backpack.png"));
 		future.thenAccept(skinRecord -> {
 			skinRecord.apply(backpack);
 		});
+		
+		return backpack;
 	}
+
 }

@@ -21,7 +21,6 @@ public class WhisperCommands {
 		    		GenericArguments.string(Text.of("Message")))
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
-//	        	Player sender = (Player) src;
 	        	Player player = (Player) args.getOne("Player").get();
 	        	Text text = Text.of(TextColors.DARK_PURPLE, " ", src.getName(), ChatIcons.WHISPER, TextColors.LIGHT_PURPLE, (String) args.getOne("Message").get());
 

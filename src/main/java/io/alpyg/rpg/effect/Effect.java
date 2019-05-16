@@ -12,9 +12,8 @@ import com.flowpowered.math.vector.Vector3d;
 
 import io.alpyg.rpg.Rpgs;
 
-public abstract class Effect {
+public class Effect {
 
-	public EffectType type = EffectType.REPEATING;
 	public ParticleEffect particleEffect = ParticleEffect.builder().type(ParticleTypes.CRITICAL_HIT).build();
 	public Vector3d position = new Vector3d();
 	public int iterations = 100;
@@ -29,10 +28,6 @@ public abstract class Effect {
 	
 	public void display(ParticleEffect particleEffect, Vector3d position) {
 		EffectManager.display(particleEffect, position);
-	}
-	
-	public void effect() {
-		
 	}
 	
 	public void playEffect() {
@@ -50,5 +45,8 @@ public abstract class Effect {
 		}).interval(10, TimeUnit.MILLISECONDS).async().submit(Rpgs.plugin);
 	}
 	
-	public abstract void onPlay();
+	public void onPlay() {
+		
+	}
+	
 }

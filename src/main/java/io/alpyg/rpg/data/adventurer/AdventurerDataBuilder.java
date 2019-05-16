@@ -1,4 +1,4 @@
-package io.alpyg.rpg.adventurer.data;
+package io.alpyg.rpg.data.adventurer;
 
 import java.util.Optional;
 
@@ -18,7 +18,7 @@ public class AdventurerDataBuilder extends AbstractDataBuilder<AdventurerData> i
 	
 	@Override
 	public AdventurerData create() {
-		return new AdventurerData(new AdventurerStats(), "", 0, 3, 0);
+		return new AdventurerData(new AdventurerStats(), 0, 0);
 	}
 	
 	@Override

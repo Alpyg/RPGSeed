@@ -26,23 +26,12 @@ public class FastTravelLocation {
 		return this.key;
 	}
 	
-	public World getWorld() {
-		return this.transform.getExtent();
-	}
-	
-	public Transform<World> getTransform() {
-		return this.transform;
-	}
-	
 	public Location<World> getLocation() {
 		return this.transform.getLocation();
-	}
-	
-	public Vector3d getPosition() {
-		return this.transform.getPosition();
 	}
 	
 	public Vector3d getRotation() {
 		return this.transform.getRotation();
 	}
+	
 }

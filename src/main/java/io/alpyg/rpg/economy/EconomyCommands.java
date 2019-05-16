@@ -18,7 +18,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import io.alpyg.rpg.Rpgs;
-import io.alpyg.rpg.adventurer.data.AdventurerKeys;
+import io.alpyg.rpg.data.adventurer.AdventurerKeys;
 
 public class EconomyCommands {
 	

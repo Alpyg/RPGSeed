@@ -6,6 +6,7 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
@@ -34,12 +35,14 @@ public class ItemCommands {
 		    		GenericArguments.onlyOne(GenericArguments.choices(Text.of("Item"), ItemConfig.getItems(), ItemConfig.getItem(), true)),
 		    		GenericArguments.optionalWeak(GenericArguments.integer(Text.of("Amount")), 1))
 	        .executor((CommandSource src, CommandContext args) -> {
+	        	
 	        	Player player = (Player) args.getOne("Player").get();
 	        	Item item = (Item) args.getOne("Item").get();
+	        	ItemStack itemStack = ((Item) args.getOne("Item").get()).getItemStack();
+	        	itemStack.setQuantity((int) args.getOne("Amount").get());
 	        	
 		        src.sendMessage(Text.of(TextColors.GREEN, Text.of("Given ", player.getName(), " x", (int) args.getOne("Amount").get(), " ", item.getDisplayName())));
-		        for (int i = 0; i < (int) args.getOne("Amount").get(); i++)
-		        	player.getInventory().offer(item.getItemStack());
+		        player.getInventory().offer(itemStack);
 	        	
 	        	return CommandResult.success();
 	        })

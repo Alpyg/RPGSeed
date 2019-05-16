@@ -9,7 +9,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import io.alpyg.rpg.adventurer.data.AdventurerKeys;
+import io.alpyg.rpg.data.adventurer.AdventurerKeys;
 
 public class AdventurerCommands {
 	

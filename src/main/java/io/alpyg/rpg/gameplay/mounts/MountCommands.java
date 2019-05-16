@@ -17,7 +17,7 @@ public class MountCommands {
 	        	if (!(src instanceof Player)) return CommandResult.empty();
 	        	
 	        	Player player = (Player) src;
-	        	Mount.summonMount(player);
+	        	player.getInventory().offer(Mount.MountItem);
 	        	
 	        	return CommandResult.success();	
 	        })

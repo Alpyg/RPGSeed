@@ -18,11 +18,11 @@ public class BackpackCommands {
 		    .arguments(GenericArguments.optional(GenericArguments.player(Text.of("Player"))))
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
-        		if(!args.hasAny(Text.of("Player"))) {
-        			Backpacks.openBackpack((Player) src, (Player) src);
-        		} else {
-        			Backpacks.openBackpack((Player) src, (Player) args.getOne("Player").get());
-        		}
+        		if(!args.hasAny(Text.of("Player")))
+        			((Player) src).getInventory().offer(Backpacks.backpackItem());
+        		
+        		else
+        			((Player) args.getOne("Player").get()).getInventory().offer((Backpacks.backpackItem()));
 	        	
 	        	return CommandResult.success();	
 	        })

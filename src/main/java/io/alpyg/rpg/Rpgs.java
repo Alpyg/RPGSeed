@@ -18,21 +18,40 @@ import com.google.inject.Inject;
 import cz.creeper.mineskinsponge.MineskinService;
 import io.alpyg.rpg.adventurer.AdventurerCommands;
 import io.alpyg.rpg.adventurer.AdventurerStats;
-import io.alpyg.rpg.adventurer.data.AdventurerBuilder;
-import io.alpyg.rpg.adventurer.data.AdventurerData;
-import io.alpyg.rpg.adventurer.data.AdventurerDataBuilder;
-import io.alpyg.rpg.adventurer.data.AdventurerKeys;
-import io.alpyg.rpg.adventurer.data.ImmutableAdventurerData;
 import io.alpyg.rpg.chat.WhisperCommands;
 import io.alpyg.rpg.damage.DamageHandler;
+import io.alpyg.rpg.data.adventurer.AdventurerBuilder;
+import io.alpyg.rpg.data.adventurer.AdventurerData;
+import io.alpyg.rpg.data.adventurer.AdventurerDataBuilder;
+import io.alpyg.rpg.data.adventurer.AdventurerKeys;
+import io.alpyg.rpg.data.adventurer.ImmutableAdventurerData;
+import io.alpyg.rpg.data.backpack.BackpackData;
+import io.alpyg.rpg.data.backpack.BackpackDataBuilder;
+import io.alpyg.rpg.data.backpack.BackpackKeys;
+import io.alpyg.rpg.data.backpack.ImmutableBackpackData;
+import io.alpyg.rpg.data.item.ImmutableItemData;
+import io.alpyg.rpg.data.item.ItemData;
+import io.alpyg.rpg.data.item.ItemDataBuilder;
+import io.alpyg.rpg.data.item.ItemKeys;
+import io.alpyg.rpg.data.mob.ImmutableMobData;
+import io.alpyg.rpg.data.mob.MobData;
+import io.alpyg.rpg.data.mob.MobDataBuilder;
+import io.alpyg.rpg.data.mob.MobKeys;
+import io.alpyg.rpg.data.npc.ImmutableNpcData;
+import io.alpyg.rpg.data.npc.NpcData;
+import io.alpyg.rpg.data.npc.NpcDataBuilder;
+import io.alpyg.rpg.data.npc.NpcKeys;
 import io.alpyg.rpg.economy.EconomyCommands;
 import io.alpyg.rpg.economy.RpgsEconomy;
 import io.alpyg.rpg.effect.EffectCommands;
+import io.alpyg.rpg.events.EntityConstructEvents;
+import io.alpyg.rpg.events.EntityDropEvent;
 import io.alpyg.rpg.events.InteractEntityEvents;
 import io.alpyg.rpg.events.InteractEvents;
 import io.alpyg.rpg.events.InventoryEvents;
 import io.alpyg.rpg.events.PlayerEvents;
 import io.alpyg.rpg.gameplay.backpack.BackpackCommands;
+import io.alpyg.rpg.gameplay.backpack.BackpackEvents;
 import io.alpyg.rpg.gameplay.fasttravel.FastTravel;
 import io.alpyg.rpg.gameplay.fasttravel.FastTravelCommands;
 import io.alpyg.rpg.gameplay.gathering.GatherCommands;
@@ -40,28 +59,16 @@ import io.alpyg.rpg.gameplay.gathering.data.GatherData;
 import io.alpyg.rpg.gameplay.gathering.data.GatherDataBuilder;
 import io.alpyg.rpg.gameplay.gathering.data.GatherKeys;
 import io.alpyg.rpg.gameplay.gathering.data.ImmutableGatherData;
-import io.alpyg.rpg.gameplay.mounts.Mount;
 import io.alpyg.rpg.gameplay.mounts.MountCommands;
+import io.alpyg.rpg.gameplay.mounts.MountEvents;
 import io.alpyg.rpg.gameplay.shop.ShopCommands;
 import io.alpyg.rpg.gameplay.shop.data.ImmutableShopData;
 import io.alpyg.rpg.gameplay.shop.data.ShopData;
 import io.alpyg.rpg.gameplay.shop.data.ShopDataBuilder;
 import io.alpyg.rpg.gameplay.shop.data.ShopKeys;
 import io.alpyg.rpg.items.ItemCommands;
-import io.alpyg.rpg.items.data.ImmutableItemData;
-import io.alpyg.rpg.items.data.ItemData;
-import io.alpyg.rpg.items.data.ItemDataBuilder;
-import io.alpyg.rpg.items.data.ItemKeys;
 import io.alpyg.rpg.mobs.MobCommands;
-import io.alpyg.rpg.mobs.data.ImmutableMobData;
-import io.alpyg.rpg.mobs.data.MobData;
-import io.alpyg.rpg.mobs.data.MobDataBuilder;
-import io.alpyg.rpg.mobs.data.MobKeys;
 import io.alpyg.rpg.npcs.NpcCommands;
-import io.alpyg.rpg.npcs.data.ImmutableNpcData;
-import io.alpyg.rpg.npcs.data.NpcData;
-import io.alpyg.rpg.npcs.data.NpcDataBuilder;
-import io.alpyg.rpg.npcs.data.NpcKeys;
 import io.alpyg.rpg.quests.QuestCommands;
 import io.alpyg.rpg.quests.QuestManager;
 import io.alpyg.rpg.utils.ConfigLoader;
@@ -100,6 +107,7 @@ public class Rpgs {
 	public void onInitialize(final GameInitializationEvent e) {
 		// Create Keys
 		AdventurerKeys.registerKeys();
+		BackpackKeys.registerKeys();
 		NpcKeys.registerKeys();
 		ShopKeys.registerKeys();
 		ItemKeys.registerKeys();
@@ -117,6 +125,14 @@ public class Rpgs {
 			.dataClass(AdventurerData.class)
 			.immutableClass(ImmutableAdventurerData.class)
 			.builder(new AdventurerDataBuilder())
+			.buildAndRegister(this.container);
+
+		DataRegistration.builder()
+			.dataName("Backpack Data")
+			.manipulatorId("backpack_data")
+			.dataClass(BackpackData.class)
+			.immutableClass(ImmutableBackpackData.class)
+			.builder(new BackpackDataBuilder())
 			.buildAndRegister(this.container);
 		
 		DataRegistration.builder()
@@ -162,11 +178,14 @@ public class Rpgs {
 	
 	private static void registerEvents() {
 		Sponge.getEventManager().registerListeners(Rpgs.plugin, new PlayerEvents());
+		Sponge.getEventManager().registerListeners(Rpgs.plugin, new BackpackEvents());
+		Sponge.getEventManager().registerListeners(Rpgs.plugin, new MountEvents());
 		Sponge.getEventManager().registerListeners(Rpgs.plugin, new InteractEntityEvents());
 		Sponge.getEventManager().registerListeners(Rpgs.plugin, new InventoryEvents());
 		Sponge.getEventManager().registerListeners(Rpgs.plugin, new InteractEvents());
+		Sponge.getEventManager().registerListeners(Rpgs.plugin, new EntityConstructEvents());
+		Sponge.getEventManager().registerListeners(Rpgs.plugin, new EntityDropEvent());
 		Sponge.getEventManager().registerListeners(Rpgs.plugin, new DamageHandler());
-		Sponge.getEventManager().registerListeners(Rpgs.plugin, new Mount());
 	}
 	
 	private static void registerCommands() {

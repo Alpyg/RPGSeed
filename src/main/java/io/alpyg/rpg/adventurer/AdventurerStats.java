@@ -7,7 +7,8 @@ import org.spongepowered.api.data.Queries;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 
-import io.alpyg.rpg.adventurer.data.AdventurerKeys;
+import io.alpyg.rpg.data.adventurer.AdventurerKeys;
+import io.alpyg.rpg.gameplay.experience.Experience;
 
 public class AdventurerStats implements DataSerializable {
 
@@ -83,10 +84,22 @@ public class AdventurerStats implements DataSerializable {
 	}
 
 	public static void updatePlayerStats(Player p) {
+		// Health
 		p.offer(Keys.MAX_HEALTH, getMaxHealth(p.get(AdventurerKeys.STATS).get().vitality));
 		p.offer(Keys.HEALTH, p.get(Keys.MAX_HEALTH).get());
+		p.offer(Keys.HEALTH_SCALE, 20D);
+		// Mana
 		p.offer(AdventurerKeys.MAX_MANA, getMaxMana(p.get(AdventurerKeys.STATS).get().magic));
 		p.offer(AdventurerKeys.MANA, p.get(AdventurerKeys.MAX_MANA).get());
+		// Experience
+		p.offer(Keys.TOTAL_EXPERIENCE, 20000);
+		p.offer(Keys.EXPERIENCE_LEVEL, Experience.getLevel(20000));
+		p.offer(Keys.EXPERIENCE_SINCE_LEVEL, p.get(Keys.TOTAL_EXPERIENCE).get() - Experience.getExperience(p.get(Keys.EXPERIENCE_LEVEL).get()));
+		
+		System.out.println(p.get(Keys.TOTAL_EXPERIENCE).get());
+		System.out.println(p.get(Keys.EXPERIENCE_LEVEL).get());
+		System.out.println(p.get(Keys.EXPERIENCE_SINCE_LEVEL).get());
+
 		if (AdventurerUI.gui.containsKey(p.getUniqueId()))
 			AdventurerUI.gui.get(p.getUniqueId()).stop();
 		AdventurerUI.gui.put(p.getUniqueId(), new AdventurerUI(p));

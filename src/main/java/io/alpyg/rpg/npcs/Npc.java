@@ -15,9 +15,9 @@ import org.spongepowered.api.event.cause.entity.spawn.SpawnTypes;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
+import io.alpyg.rpg.data.npc.NpcData;
+import io.alpyg.rpg.data.npc.NpcKeys;
 import io.alpyg.rpg.mobs.ai.WatchClosestAI;
-import io.alpyg.rpg.npcs.data.NpcData;
-import io.alpyg.rpg.npcs.data.NpcKeys;
 
 public class Npc {
 
@@ -29,6 +29,7 @@ public class Npc {
 		entity.offer(Keys.DISPLAY_NAME, config.getDisplayName());
 		entity.offer(Keys.INVULNERABLE, true);
 		entity.offer(Keys.PERSISTS, true);
+		entity.offer(NpcKeys.ID, config.getInternalName());
 		entity.offer(NpcKeys.QUEST, config.getQuest());
 
 		try (StackFrame frame = Sponge.getCauseStackManager().pushCauseFrame()) {

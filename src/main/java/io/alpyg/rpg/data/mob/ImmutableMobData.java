@@ -1,4 +1,4 @@
-package io.alpyg.rpg.mobs.data;
+package io.alpyg.rpg.data.mob;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
@@ -7,13 +7,13 @@ import org.spongepowered.api.data.value.immutable.ImmutableValue;
 
 public class ImmutableMobData extends AbstractImmutableData<ImmutableMobData, MobData> {
 	
-	private String internalName;
+	private String id;
 	private double level;
 	private double damage;
 	private double defence;
 	
 	public ImmutableMobData(String internalName, double level, double damage, double defence) {
-		this.internalName = internalName;
+		this.id = internalName;
 		this.level = level;
 		this.damage = damage;
 		this.defence = defence;
@@ -23,19 +23,19 @@ public class ImmutableMobData extends AbstractImmutableData<ImmutableMobData, Mo
 	
 	@Override
 	protected void registerGetters() {
-		registerFieldGetter(MobKeys.ID, () -> this.internalName);
+		registerFieldGetter(MobKeys.ID, () -> this.id);
 		registerFieldGetter(MobKeys.LEVEL, () -> this.level);
 		registerFieldGetter(MobKeys.DAMAGE, () -> this.damage);
 		registerFieldGetter(MobKeys.DEFENCE, () -> this.defence);
 
-		registerKeyValue(MobKeys.ID, this::internalName);
+		registerKeyValue(MobKeys.ID, this::id);
 		registerKeyValue(MobKeys.LEVEL, this::level);
 		registerKeyValue(MobKeys.DAMAGE, this::damage);
 		registerKeyValue(MobKeys.DEFENCE, this::defence);
 	}
 	
-	public ImmutableValue<String> internalName() {
-        return Sponge.getRegistry().getValueFactory().createValue(MobKeys.ID, internalName).asImmutable();
+	public ImmutableValue<String> id() {
+        return Sponge.getRegistry().getValueFactory().createValue(MobKeys.ID, id).asImmutable();
     }
 	
 	public ImmutableValue<Double> level() {
@@ -52,7 +52,7 @@ public class ImmutableMobData extends AbstractImmutableData<ImmutableMobData, Mo
 	
 	@Override
 	public MobData asMutable() {
-		return new MobData(this.internalName, this.level, this.damage, this.defence);
+		return new MobData(this.id, this.level, this.damage, this.defence);
 	}
 	
 	@Override
@@ -63,7 +63,7 @@ public class ImmutableMobData extends AbstractImmutableData<ImmutableMobData, Mo
 	@Override
 	public DataContainer toContainer() {
         return super.toContainer()
-				.set(MobKeys.ID.getQuery(), this.internalName)
+				.set(MobKeys.ID.getQuery(), this.id)
 				.set(MobKeys.LEVEL.getQuery(), this.level)
 				.set(MobKeys.DAMAGE.getQuery(), this.damage)
 				.set(MobKeys.DEFENCE.getQuery(), this.defence);

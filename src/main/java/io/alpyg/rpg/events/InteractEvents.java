@@ -15,7 +15,6 @@ import org.spongepowered.api.util.Tristate;
 
 import io.alpyg.rpg.adventurer.AdventurerStatsMenu;
 import io.alpyg.rpg.crafting.EquipmentUpgradeMenu;
-import io.alpyg.rpg.gameplay.backpack.Backpacks;
 import io.alpyg.rpg.quests.QuestManager;
 
 public class InteractEvents {
@@ -23,12 +22,8 @@ public class InteractEvents {
 	@Listener
 	public void onItemRightClick(InteractItemEvent.Secondary.MainHand e, @First Player player) {
 		Text item = e.getItemStack().get(Keys.DISPLAY_NAME).orElse(Text.of());
-		if (item.equals(Backpacks.backpackName)) {
-			e.setCancelled(true);
-			Backpacks.openBackpack(player, player);
-		}
 		
-		else if (item.equals(QuestManager.journalName)) {
+		if (item.equals(QuestManager.journalName)) {
 			e.setCancelled(true);
 			QuestManager.openPlayerJournal(player);
 		}
@@ -37,7 +32,6 @@ public class InteractEvents {
 	@Listener
 	public void onEntityRightClick(InteractEntityEvent.Secondary.MainHand e, @First Player player) {
 		if (e.getTargetEntity() instanceof Player) return;
-		
 	}
 	
 	@Listener
@@ -78,13 +72,8 @@ public class InteractEvents {
 		
 		Text item = player.getItemInHand(HandTypes.MAIN_HAND).get().get(Keys.DISPLAY_NAME).orElse(Text.of());
 		// Backpack
-		if (item.equals(Backpacks.backpackName)) {
-			e.setCancelled(true);
-			e.setUseItemResult(Tristate.FALSE);
-			Backpacks.openBackpack(player, player);
-		}
 		
-		else if (item.equals(QuestManager.journalName)) {
+		if (item.equals(QuestManager.journalName)) {
 			e.setCancelled(true);
 			QuestManager.openPlayerJournal(player);
 		}

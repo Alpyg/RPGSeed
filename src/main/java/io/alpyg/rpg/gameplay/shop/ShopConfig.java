@@ -8,19 +8,18 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.persistence.DataFormats;
-import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import io.alpyg.rpg.items.ItemConfig;
+import io.alpyg.rpg.utils.ItemStackUtils;
 import ninja.leaping.configurate.ConfigurationNode;
 
 public class ShopConfig {
 
 	public static Map<String, ShopConfig> shops = new HashMap<String, ShopConfig>();
+	public static Map<String, Integer> prices = new HashMap<String, Integer>();
 
 	private String internalName;
 	private String profession;
@@ -39,13 +38,8 @@ public class ShopConfig {
 		for (ConfigurationNode item : items) {
 			String index = item.getKey().toString();
 			String itemType = item.getValue().toString();
-			ItemStack itemStack;
-			if (ItemConfig.items.containsKey(itemType))
-				itemStack = ItemConfig.items.get(itemType).getItemStack();
-			else if (Sponge.getRegistry().getType(ItemType.class, itemType).isPresent())
-				itemStack = ItemStack.of(Sponge.getRegistry().getType(ItemType.class, itemType).get());
-			else
-				throw new IllegalArgumentException("Invalid Item Type " + itemType + ", Shop Keeper " + this.internalName + ", Item slot " + index);
+			ItemStack itemStack = ItemStackUtils.getItemStack(itemType)
+					.orElseThrow(() -> new IllegalArgumentException("Invalid Item Type " + itemType + ", Shop Keeper " + this.internalName + ", Item slot " + index));
 			
 			try {
 				finalShopData += index + ",";

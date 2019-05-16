@@ -7,15 +7,16 @@ import org.spongepowered.api.entity.Equipable;
 import org.spongepowered.api.event.CauseStackManager.StackFrame;
 import org.spongepowered.api.event.cause.EventContextKeys;
 import org.spongepowered.api.event.cause.entity.spawn.SpawnTypes;
+import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.item.inventory.equipment.EquipmentTypes;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import io.alpyg.rpg.items.ItemConfig;
-import io.alpyg.rpg.mobs.data.MobData;
-import io.alpyg.rpg.mobs.data.MobKeys;
+import io.alpyg.rpg.data.mob.MobData;
+import io.alpyg.rpg.data.mob.MobKeys;
+import io.alpyg.rpg.utils.ItemStackUtils;
 
 public class Mob {
 	
@@ -49,18 +50,12 @@ public class Mob {
 		// Setting Equipment
 		if(entity instanceof Equipable) {
 			Equipable entityEquipment = (Equipable) entity;
-			if(ItemConfig.items.containsKey(smd.mainHand))
-				entityEquipment.equip(EquipmentTypes.MAIN_HAND, ItemConfig.getItem().apply(smd.mainHand).getItemStack());
-			if(ItemConfig.items.containsKey(smd.offHand))
-				entityEquipment.equip(EquipmentTypes.OFF_HAND, ItemConfig.getItem().apply(smd.offHand).getItemStack());
-			if(ItemConfig.items.containsKey(smd.head))
-				entityEquipment.equip(EquipmentTypes.HEADWEAR, ItemConfig.getItem().apply(smd.head).getItemStack());
-			if(ItemConfig.items.containsKey(smd.chest))
-				entityEquipment.equip(EquipmentTypes.CHESTPLATE, ItemConfig.getItem().apply(smd.chest).getItemStack());
-			if(ItemConfig.items.containsKey(smd.legs))
-				entityEquipment.equip(EquipmentTypes.LEGGINGS, ItemConfig.getItem().apply(smd.legs).getItemStack());
-			if(ItemConfig.items.containsKey(smd.feet))
-				entityEquipment.equip(EquipmentTypes.BOOTS, ItemConfig.getItem().apply(smd.feet).getItemStack());
+			entityEquipment.equip(EquipmentTypes.MAIN_HAND, ItemStackUtils.getItemStack(smd.mainHand).orElse(ItemStack.empty()));
+			entityEquipment.equip(EquipmentTypes.OFF_HAND, ItemStackUtils.getItemStack(smd.offHand).orElse(ItemStack.empty()));
+			entityEquipment.equip(EquipmentTypes.HEADWEAR, ItemStackUtils.getItemStack(smd.head).orElse(ItemStack.empty()));
+			entityEquipment.equip(EquipmentTypes.CHESTPLATE, ItemStackUtils.getItemStack(smd.chest).orElse(ItemStack.empty()));
+			entityEquipment.equip(EquipmentTypes.LEGGINGS, ItemStackUtils.getItemStack(smd.legs).orElse(ItemStack.empty()));
+			entityEquipment.equip(EquipmentTypes.BOOTS, ItemStackUtils.getItemStack(smd.feet).orElse(ItemStack.empty()));
 		}
 
 		try (StackFrame frame = Sponge.getCauseStackManager().pushCauseFrame()) {

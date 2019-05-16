@@ -7,10 +7,10 @@ import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
+import io.alpyg.rpg.data.item.ItemData;
+import io.alpyg.rpg.data.item.ItemKeys;
 import io.alpyg.rpg.items.Item;
 import io.alpyg.rpg.items.ItemConfig;
-import io.alpyg.rpg.items.data.ItemData;
-import io.alpyg.rpg.items.data.ItemKeys;
 
 public class Weapon extends Item {
 	

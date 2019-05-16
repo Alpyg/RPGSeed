@@ -6,10 +6,10 @@ import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 
+import io.alpyg.rpg.data.item.ItemData;
+import io.alpyg.rpg.data.item.ItemKeys;
 import io.alpyg.rpg.items.Item;
 import io.alpyg.rpg.items.ItemConfig;
-import io.alpyg.rpg.items.data.ItemData;
-import io.alpyg.rpg.items.data.ItemKeys;
 
 public class Material extends Item {
 	

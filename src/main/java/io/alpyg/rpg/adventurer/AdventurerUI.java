@@ -17,7 +17,7 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.title.Title;
 
 import io.alpyg.rpg.Rpgs;
-import io.alpyg.rpg.adventurer.data.AdventurerKeys;
+import io.alpyg.rpg.data.adventurer.AdventurerKeys;
 import io.alpyg.rpg.utils.VectorUtils;
 
 public class AdventurerUI {

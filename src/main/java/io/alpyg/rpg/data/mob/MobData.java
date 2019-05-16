@@ -1,4 +1,4 @@
-package io.alpyg.rpg.mobs.data;
+package io.alpyg.rpg.data.mob;
 
 import java.util.Optional;
 
@@ -12,13 +12,13 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 public class MobData extends AbstractData<MobData, ImmutableMobData> {
 	
-	private String internalName;
+	private String id;
 	private double level;
 	private double damage;
 	private double defence;
 	
 	public MobData(String internalName, double level, double damage, double defence) {
-		this.internalName = internalName;
+		this.id = internalName;
 		this.level = level;
 		this.damage = damage;
 		this.defence = defence;
@@ -28,24 +28,24 @@ public class MobData extends AbstractData<MobData, ImmutableMobData> {
 	
 	@Override
 	protected void registerGettersAndSetters() {
-		registerFieldGetter(MobKeys.ID, () -> this.internalName);
+		registerFieldGetter(MobKeys.ID, () -> this.id);
 		registerFieldGetter(MobKeys.LEVEL, () -> this.level);
 		registerFieldGetter(MobKeys.DAMAGE, () -> this.damage);
 		registerFieldGetter(MobKeys.DEFENCE, () -> this.defence);
 		
-		registerFieldSetter(MobKeys.ID, x -> this.internalName = x);
+		registerFieldSetter(MobKeys.ID, x -> this.id = x);
 		registerFieldSetter(MobKeys.LEVEL, x -> this.level = x);
 		registerFieldSetter(MobKeys.DAMAGE, x -> this.damage = x);
 		registerFieldSetter(MobKeys.DEFENCE, x -> this.defence = x);
 		
-		registerKeyValue(MobKeys.ID, this::internalName);
+		registerKeyValue(MobKeys.ID, this::id);
 		registerKeyValue(MobKeys.LEVEL, this::level);
 		registerKeyValue(MobKeys.DAMAGE, this::damage);
 		registerKeyValue(MobKeys.DEFENCE, this::defence);
 	}
 	
-	public Value<String> internalName() {
-        return Sponge.getRegistry().getValueFactory().createValue(MobKeys.ID, internalName);
+	public Value<String> id() {
+        return Sponge.getRegistry().getValueFactory().createValue(MobKeys.ID, id);
 	}
 	public Value<Double> level() {
         return Sponge.getRegistry().getValueFactory().createValue(MobKeys.LEVEL, level);
@@ -65,7 +65,7 @@ public class MobData extends AbstractData<MobData, ImmutableMobData> {
 		if (otherData_.isPresent()) {
 			MobData otherData = otherData_.get();
 			MobData finalData = overlap.merge(this, otherData);
-			this.internalName = finalData.internalName;
+			this.id = finalData.id;
 			this.level = finalData.level;
 			this.damage = finalData.damage;
 			this.defence = finalData.defence;
@@ -85,7 +85,7 @@ public class MobData extends AbstractData<MobData, ImmutableMobData> {
 				MobKeys.DEFENCE.getQuery()))
 			return Optional.empty();
 		
-		this.internalName = view.getString(MobKeys.ID.getQuery()).get();
+		this.id = view.getString(MobKeys.ID.getQuery()).get();
 		this.level = view.getInt(MobKeys.LEVEL.getQuery()).get();
 		this.damage = view.getDouble(MobKeys.DAMAGE.getQuery()).get();
 		this.defence = view.getDouble(MobKeys.DEFENCE.getQuery()).get();
@@ -95,13 +95,13 @@ public class MobData extends AbstractData<MobData, ImmutableMobData> {
 	
 	@Override
 	public MobData copy() {
-		return new MobData(this.internalName, this.level, this.damage, this.defence);
+		return new MobData(this.id, this.level, this.damage, this.defence);
 	}
 	
 	
 	@Override
 	public ImmutableMobData asImmutable() {
-		return new ImmutableMobData(this.internalName, this.level, this.damage, this.defence);
+		return new ImmutableMobData(this.id, this.level, this.damage, this.defence);
 	}
 
     @Override
@@ -112,7 +112,7 @@ public class MobData extends AbstractData<MobData, ImmutableMobData> {
 	@Override
 	public DataContainer toContainer() {
         return super.toContainer()
-				.set(MobKeys.ID.getQuery(), this.internalName)
+				.set(MobKeys.ID.getQuery(), this.id)
 				.set(MobKeys.LEVEL.getQuery(), this.level)
 				.set(MobKeys.DAMAGE.getQuery(), this.damage)
 				.set(MobKeys.DEFENCE.getQuery(), this.defence);

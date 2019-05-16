@@ -46,6 +46,7 @@ public abstract class FastTravel {
 	}
 	
 	public static boolean teleport(Player player, FastTravelLocation location) {
+		location.getLocation().getExtent().loadChunk(location.getLocation().getChunkPosition(), true);
 		return player.setLocationAndRotationSafely(location.getLocation(), location.getRotation());
 	}
 	

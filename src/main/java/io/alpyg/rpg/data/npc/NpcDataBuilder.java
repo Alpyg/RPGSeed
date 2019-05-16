@@ -1,4 +1,4 @@
-package io.alpyg.rpg.npcs.data;
+package io.alpyg.rpg.data.npc;
 
 import java.util.Optional;
 
@@ -16,7 +16,7 @@ public class NpcDataBuilder extends AbstractDataBuilder<NpcData> implements Data
 	
 	@Override
 	public NpcData create() {
-		return new NpcData("");
+		return new NpcData("", "");
 	}
 	
 	@Override

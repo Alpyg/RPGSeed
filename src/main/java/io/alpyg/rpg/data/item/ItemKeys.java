@@ -1,4 +1,4 @@
-package io.alpyg.rpg.items.data;
+package io.alpyg.rpg.data.item;
 
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Key;

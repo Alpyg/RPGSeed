@@ -1,4 +1,4 @@
-package io.alpyg.rpg.items.data;
+package io.alpyg.rpg.data.item;
 
 import java.util.Optional;
 

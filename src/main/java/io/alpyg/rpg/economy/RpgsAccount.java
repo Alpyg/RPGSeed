@@ -22,7 +22,7 @@ import org.spongepowered.api.service.economy.transaction.TransferResult;
 import org.spongepowered.api.text.Text;
 
 import io.alpyg.rpg.Rpgs;
-import io.alpyg.rpg.adventurer.data.AdventurerKeys;
+import io.alpyg.rpg.data.adventurer.AdventurerKeys;
 
 public class RpgsAccount implements UniqueAccount {
 	

@@ -15,9 +15,9 @@ import org.spongepowered.api.text.format.TextColors;
 import com.flowpowered.math.vector.Vector3d;
 
 import io.alpyg.rpg.adventurer.AdventurerUI;
-import io.alpyg.rpg.adventurer.data.AdventurerKeys;
-import io.alpyg.rpg.items.data.ItemKeys;
-import io.alpyg.rpg.mobs.data.MobKeys;
+import io.alpyg.rpg.data.adventurer.AdventurerKeys;
+import io.alpyg.rpg.data.item.ItemKeys;
+import io.alpyg.rpg.data.mob.MobKeys;
 
 public class CombatDamage {
 	

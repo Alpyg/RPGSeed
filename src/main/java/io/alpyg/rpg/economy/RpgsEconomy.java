@@ -15,7 +15,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import com.google.common.collect.Sets;
 
-import io.alpyg.rpg.adventurer.data.AdventurerKeys;
+import io.alpyg.rpg.data.adventurer.AdventurerKeys;
 
 public class RpgsEconomy implements EconomyService {
 	

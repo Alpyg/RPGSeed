@@ -36,7 +36,7 @@ import org.spongepowered.api.world.World;
 import com.flowpowered.math.vector.Vector3d;
 
 import io.alpyg.rpg.Rpgs;
-import io.alpyg.rpg.adventurer.data.AdventurerKeys;
+import io.alpyg.rpg.data.adventurer.AdventurerKeys;
 
 public class AdventurerStatsMenu {
 

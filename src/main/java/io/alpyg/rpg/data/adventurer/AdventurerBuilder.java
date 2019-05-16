@@ -1,4 +1,4 @@
-package io.alpyg.rpg.adventurer.data;
+package io.alpyg.rpg.data.adventurer;
 
 import java.util.Optional;
 

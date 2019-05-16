@@ -1,4 +1,4 @@
-package io.alpyg.rpg.adventurer.data;
+package io.alpyg.rpg.data.adventurer;
 
 import org.spongepowered.api.data.DataQuery;
 import org.spongepowered.api.data.key.Key;
@@ -17,9 +17,6 @@ public class AdventurerKeys {
 	public static Key<Value<Double>> MANA;
 	
 	public static Key<Value<Integer>> BALANCE;
-	
-	public static Key<Value<String>> BACKPACK_DATA;
-	public static Key<Value<Integer>> BACKPACK_SIZE;
 	
 	public static Key<Value<EntitySnapshot>> MOUNT;
 
@@ -43,25 +40,11 @@ public class AdventurerKeys {
 				.name("Mana")
 				.query(DataQuery.of('.', "adventurer.mana"))
 				.build();
-		
 		BALANCE = Key.builder()
 				.type(TypeTokens.INTEGER_VALUE_TOKEN)
 				.id("adventurer_balance")
 				.name("Balance")
 				.query(DataQuery.of('.', "adventurer.balance"))
-				.build();
-		
-		BACKPACK_DATA = Key.builder()
-				.type(TypeTokens.STRING_VALUE_TOKEN)
-				.id("adventurer_backpack")
-				.name("Backpack")
-				.query(DataQuery.of('.', "adventurer.backpack.data"))
-				.build();
-		BACKPACK_SIZE = Key.builder()
-				.type(TypeTokens.INTEGER_VALUE_TOKEN)
-				.id("adventurer_backpack_size")
-				.name("Backpack Size")
-				.query(DataQuery.of('.', "adventurer.backpack.size"))
 				.build();
 		
 		MOUNT = Key.builder()

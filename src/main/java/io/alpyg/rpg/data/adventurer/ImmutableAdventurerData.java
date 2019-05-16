@@ -1,4 +1,4 @@
-package io.alpyg.rpg.adventurer.data;
+package io.alpyg.rpg.data.adventurer;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.DataContainer;
@@ -15,18 +15,12 @@ public class ImmutableAdventurerData extends AbstractImmutableData<ImmutableAdve
 	
 	private int balance;
 	
-	private String backpackData;
-	private int backpackSize;
-	
-	public ImmutableAdventurerData(AdventurerStats stats, String backpackData, int balance, int backpackSize, double mana) {
+	public ImmutableAdventurerData(AdventurerStats stats, int balance, double mana) {
 		this.stats = stats;
 		this.max_mana = AdventurerStats.getMaxMana(stats.magic);
 		this.mana = mana;
 		
 		this.balance = balance;
-		
-		this.backpackData = backpackData;
-		this.backpackSize = backpackSize;
 		
 		registerGetters();
 	}
@@ -37,15 +31,11 @@ public class ImmutableAdventurerData extends AbstractImmutableData<ImmutableAdve
 		registerFieldGetter(AdventurerKeys.MAX_MANA, () -> this.max_mana);
 		registerFieldGetter(AdventurerKeys.MANA, () -> this.mana);
 		registerFieldGetter(AdventurerKeys.BALANCE, () -> this.balance);
-		registerFieldGetter(AdventurerKeys.BACKPACK_DATA, () -> this.backpackData);
-		registerFieldGetter(AdventurerKeys.BACKPACK_SIZE, () -> this.backpackSize);
 
 		registerKeyValue(AdventurerKeys.STATS, this::stats);
 		registerKeyValue(AdventurerKeys.MAX_MANA, this::max_mana);
 		registerKeyValue(AdventurerKeys.MANA, this::mana);
 		registerKeyValue(AdventurerKeys.BALANCE, this::balance);
-		registerKeyValue(AdventurerKeys.BACKPACK_DATA, this::backpackData);
-		registerKeyValue(AdventurerKeys.BACKPACK_SIZE, this::backpackSize);
 	}
 
     public ImmutableValue<AdventurerStats> stats() {
@@ -64,17 +54,9 @@ public class ImmutableAdventurerData extends AbstractImmutableData<ImmutableAdve
 		return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BALANCE, this.balance).asImmutable();
 	}
 	
-	public ImmutableValue<String> backpackData() {
-		return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BACKPACK_DATA, this.backpackData).asImmutable();
-	}
-	
-	public ImmutableValue<Integer> backpackSize() {
-		return Sponge.getRegistry().getValueFactory().createValue(AdventurerKeys.BACKPACK_SIZE, this.backpackSize).asImmutable();
-	}
-	
 	@Override
     public AdventurerData asMutable() {
-        return new AdventurerData(this.stats, this.backpackData, this.balance, this.backpackSize, this.mana);
+        return new AdventurerData(this.stats, this.balance, this.mana);
     }
 
     @Override
@@ -88,8 +70,7 @@ public class ImmutableAdventurerData extends AbstractImmutableData<ImmutableAdve
                 .set(AdventurerKeys.STATS.getQuery(), this.stats)
                 .set(AdventurerKeys.MAX_MANA.getQuery(), this.max_mana)
                 .set(AdventurerKeys.MANA.getQuery(), this.mana)
-                .set(AdventurerKeys.BALANCE.getQuery(), this.balance)
-                .set(AdventurerKeys.BACKPACK_DATA.getQuery(), this.backpackData)
-                .set(AdventurerKeys.BACKPACK_SIZE.getQuery(), this.backpackSize);
+                .set(AdventurerKeys.BALANCE.getQuery(), this.balance);
 	}
+	
 }
