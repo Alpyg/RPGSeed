@@ -18,7 +18,7 @@ public class EffectCommands {
 	        .executor((CommandSource src, CommandContext args) -> {
 	        	
 	        	Player player = (Player) src;
-	        	new SphereEffect(ParticleTypes.CRITICAL_HIT, player);
+	        	Effect.builder().effect(new SphereEffect(1)).particle(ParticleTypes.CRITICAL_HIT).location(player.getLocation()).build();
 	        	
 	        	return CommandResult.success();	
 	        })
